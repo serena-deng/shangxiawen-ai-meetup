@@ -1,0 +1,346 @@
+/* ==========================================================================
+   Progressive Disclosure UI (渐进式披露交互样式)
+   核心原则：一次呈现一个核心决策，用户主动触发后再逐层展开详情
+   ========================================================================== */
+
+/* 1. 面板切换过渡动效 */
+.pd-view-panel {
+  animation: pd-fade-in 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes pd-fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 2. 首页：按需切换视图（默认显示活动，隐藏名片工坊，反之亦然） */
+body[data-community-view="gathering"] #card-studio {
+  display: none !important;
+}
+body[data-community-view="card-studio"] #gathering,
+body[data-community-view="card-studio"] #registration-entry {
+  display: none !important;
+}
+
+/* 顶部意图选择器强化 */
+.community-choose {
+  position: relative;
+  z-index: 2;
+}
+.community-choose a {
+  position: relative;
+  transition: all 0.22s ease;
+  cursor: pointer;
+}
+.community-choose a::after {
+  content: "点击展开 ↓";
+  position: absolute;
+  top: 20px;
+  right: 22px;
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0.55;
+}
+.community-choose a.partner-choice::after {
+  content: "进入专页 ↗";
+}
+.community-choose a[aria-current="true"] {
+  box-shadow: 0 12px 28px rgba(9, 45, 57, 0.16);
+  transform: translateY(-2px);
+}
+.community-choose a[aria-current="true"]::after {
+  content: "当前展开 ●";
+  color: #e4c398;
+  opacity: 1;
+}
+
+/* 3. 分步表单向导 (Step-by-Step Wizard for AI Card Studio) */
+.pd-stepper-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 22px;
+  background: #dde3de;
+  padding: 5px;
+  border-radius: 6px;
+}
+.pd-step-tab {
+  border: 0;
+  background: transparent;
+  padding: 10px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #5b6d64;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.18s ease;
+}
+.pd-step-tab span.num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #c8d2ca;
+  color: #2f463c;
+  display: inline-grid;
+  place-items: center;
+  font: 10px Georgia, serif;
+  flex-shrink: 0;
+}
+.pd-step-tab.active {
+  background: #fffefb;
+  color: #0a2137;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(10, 33, 55, 0.08);
+}
+.pd-step-tab.active span.num {
+  background: #0a2137;
+  color: #e4c398;
+}
+.pd-step-tab.done span.num {
+  background: #497e68;
+  color: #fff;
+}
+
+.studio-form fieldset.editor-group {
+  display: none;
+  background: #f6f8f4;
+  border: 1px solid #d2dbd3;
+  border-radius: 7px;
+  padding: 22px 22px 20px;
+  animation: pd-fade-in 0.24s ease;
+}
+.studio-form fieldset.editor-group.pd-step-active {
+  display: grid;
+}
+
+.pd-wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid #cfd8d0;
+}
+.pd-wizard-nav .pd-step-indicator {
+  font-size: 11px;
+  color: #6b7c73;
+}
+.pd-wizard-btns {
+  display: flex;
+  gap: 10px;
+}
+.pd-btn-prev,
+.pd-btn-next {
+  padding: 10px 18px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid #b5c2b8;
+  background: #fff;
+  color: #1e3443;
+}
+.pd-btn-next {
+  background: #0a2137;
+  border-color: #0a2137;
+  color: #fff;
+}
+
+/* 4. 渐进式折叠抽屉 / 胶囊切换器 (Pill Switcher & Expandable Drawer) */
+.pd-pill-bar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 5px;
+  background: #e6ebe4;
+  border: 1px solid #cfd7cc;
+  border-radius: 8px;
+  margin-bottom: 28px;
+}
+.pd-pill-btn {
+  border: 0;
+  background: transparent;
+  color: #4f645c;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  transition: all 0.18s ease;
+}
+.pd-pill-btn small {
+  font-size: 10px;
+  opacity: 0.72;
+  font-weight: 400;
+}
+.pd-pill-btn[aria-selected="true"] {
+  background: #092d39;
+  color: #f8f6ef;
+  box-shadow: 0 4px 14px rgba(9, 45, 57, 0.16);
+}
+.pd-pill-btn[aria-selected="true"] small {
+  color: #e4c48c;
+  opacity: 1;
+}
+
+/* 渐进展开详情按钮与容器 */
+.pd-reveal-trigger {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 1px solid #c9d2c8;
+  border-radius: 4px;
+  background: #f5f6f0;
+  color: #264852;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.pd-reveal-trigger:hover {
+  border-color: #8c7046;
+  background: #eeeadd;
+}
+.pd-collapsible-body {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px dashed #d3dad0;
+  animation: pd-fade-in 0.24s ease;
+}
+
+/* 5. FDE 六大模块：主从渐进式浏览 (Master-Detail Progressive Explorer) */
+.pd-master-detail {
+  display: grid;
+  grid-template-columns: 0.9fr 1.25fr;
+  gap: 32px;
+  align-items: stretch;
+  margin-top: 32px;
+}
+.pd-module-list {
+  display: grid;
+  gap: 10px;
+}
+.pd-module-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  padding: 16px 20px;
+  background: #fffdf8;
+  border: 1px solid #d9ded5;
+  border-radius: 6px;
+  color: #183943;
+  transition: all 0.18s ease;
+}
+.pd-module-tab:hover {
+  border-color: #8c7046;
+}
+.pd-module-tab .left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pd-module-tab .num {
+  font: 12px Georgia, serif;
+  color: #8c7046;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #f2eee4;
+}
+.pd-module-tab strong {
+  font-size: 15px;
+  font-weight: 500;
+}
+.pd-module-tab .tag {
+  font-size: 11px;
+  color: #72847e;
+}
+.pd-module-tab[aria-selected="true"] {
+  background: #092d39;
+  border-color: #092d39;
+  color: #f8f6ef;
+  box-shadow: 0 10px 24px rgba(9, 45, 57, 0.14);
+}
+.pd-module-tab[aria-selected="true"] .num {
+  background: #e4c48c;
+  color: #092d39;
+  font-weight: 600;
+}
+.pd-module-tab[aria-selected="true"] .tag {
+  color: #e4c48c;
+}
+
+.pd-module-detail-stage {
+  background: #fffdf8;
+  border: 1px solid #cfd6cc;
+  border-radius: 8px;
+  padding: 36px 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 14px 34px rgba(9, 45, 57, 0.05);
+}
+
+/* 6. 流程步骤渐进式点击切换 (Interactive Stepper Process) */
+.pd-process-stepper {
+  margin-top: 28px;
+}
+.pd-process-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.pd-process-tab {
+  text-align: left;
+  padding: 18px 20px;
+  background: #f3f2ea;
+  border: 1px solid #d5dbd0;
+  border-radius: 5px;
+  transition: all 0.2s ease;
+}
+.pd-process-tab span {
+  display: block;
+  font: 14px Georgia, serif;
+  color: #8c7046;
+  margin-bottom: 6px;
+}
+.pd-process-tab strong {
+  display: block;
+  font-size: 15px;
+  color: #183943;
+}
+.pd-process-tab[aria-selected="true"] {
+  background: #092d39;
+  border-color: #092d39;
+  color: #f8f6ef;
+}
+.pd-process-tab[aria-selected="true"] span {
+  color: #e4c48c;
+}
+.pd-process-tab[aria-selected="true"] strong {
+  color: #fff;
+}
+.pd-process-panel {
+  background: #fffdf8;
+  border: 1px solid #d9ded5;
+  border-radius: 6px;
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+@media (max-width: 860px) {
+  .pd-stepper-bar { grid-template-columns: repeat(2, 1fr); }
+  .pd-master-detail { grid-template-columns: 1fr; }
+  .pd-process-tabs { grid-template-columns: repeat(2, 1fr); }
+  .pd-process-panel { flex-direction: column; align-items: flex-start; gap: 16px; }
+}

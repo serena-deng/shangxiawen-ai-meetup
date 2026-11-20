@@ -1,0 +1,257 @@
+/* ==========================================================================
+   上下闻微信小程序全局样式 (参考香港都会大学 HKMU 门户排版 + 渐进式披露 UI)
+   ========================================================================== */
+page {
+  --navy: #0a2137;
+  --navy-deep: #061524;
+  --teal: #0b5d69;
+  --teal-light: #137887;
+  --gold: #c9a063;
+  --gold-soft: #e4c398;
+  --bg: #f5f6f4;
+  --surface: #ffffff;
+  --border: #dce1de;
+  --text: #182b38;
+  --muted: #5c6f7b;
+
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: 28rpx;
+  line-height: 1.65;
+  box-sizing: border-box;
+}
+
+view, text, button, input, textarea, picker, scroll-view {
+  box-sizing: border-box;
+}
+
+/* 1. 都会大学式顶部受众分流工具栏 (Top Role Portal Bar) */
+.utility-bar {
+  background: var(--navy-deep);
+  color: #b7c6d4;
+  padding: 14rpx 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.1);
+}
+.utility-roles {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.utility-label {
+  color: var(--gold-soft);
+  font-size: 20rpx;
+  font-weight: 700;
+  letter-spacing: 1rpx;
+}
+.role-chip {
+  font-size: 22rpx;
+  color: #c9d6e2;
+  padding: 6rpx 16rpx;
+  border-radius: 6rpx;
+  background: rgba(255, 255, 255, 0.07);
+}
+.role-chip.active {
+  background: rgba(228, 195, 152, 0.22);
+  color: var(--gold-soft);
+  font-weight: 600;
+}
+
+/* 2. 都会大学式机构品牌栏 */
+.brand-header {
+  background: var(--surface);
+  padding: 20rpx 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2rpx solid var(--border);
+}
+.brand-left {
+  display: flex;
+  align-items: center;
+  gap: 18rpx;
+}
+.brand-logo {
+  width: 148rpx;
+  height: 60rpx;
+  background: var(--navy);
+  padding: 6rpx 12rpx;
+  border-radius: 6rpx;
+}
+.brand-title-wrap {
+  border-left: 4rpx solid var(--gold);
+  padding-left: 16rpx;
+}
+.brand-title {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+}
+.brand-sub {
+  display: block;
+  font-size: 18rpx;
+  letter-spacing: 2rpx;
+  color: var(--muted);
+}
+.portal-pill {
+  background: var(--teal);
+  color: #ffffff;
+  font-size: 22rpx;
+  font-weight: 600;
+  padding: 10rpx 20rpx;
+  border-radius: 6rpx;
+}
+
+/* 3. 通用区块标题 (HKMU Section Header) */
+.section-wrap {
+  padding: 36rpx 28rpx;
+}
+.hkmu-sec-head {
+  border-bottom: 4rpx solid var(--navy);
+  padding-bottom: 16rpx;
+  margin-bottom: 26rpx;
+}
+.sec-kicker {
+  display: block;
+  font-size: 20rpx;
+  letter-spacing: 3rpx;
+  color: var(--teal);
+  font-weight: 700;
+  margin-bottom: 6rpx;
+}
+.sec-title {
+  display: block;
+  font-size: 38rpx;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.3;
+}
+.sec-desc {
+  display: block;
+  font-size: 24rpx;
+  color: var(--muted);
+  margin-top: 8rpx;
+}
+
+/* 4. 渐进式披露胶囊切换栏 (Progressive Pill Bar) */
+.pill-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  background: #e6ebe6;
+  padding: 8rpx;
+  border-radius: 12rpx;
+  margin-bottom: 24rpx;
+}
+.pill-btn {
+  flex: 1;
+  min-width: 180rpx;
+  text-align: center;
+  padding: 16rpx 16rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #4a6058;
+  transition: all 0.2s;
+}
+.pill-btn.active {
+  background: var(--navy);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 6rpx 16rpx rgba(10, 33, 55, 0.16);
+}
+.pill-sub {
+  display: block;
+  font-size: 19rpx;
+  opacity: 0.78;
+  margin-top: 2rpx;
+}
+.pill-btn.active .pill-sub {
+  color: var(--gold-soft);
+  opacity: 1;
+}
+
+/* 5. 通用卡片与渐进式折叠抽屉 */
+.card-box {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 12rpx;
+  padding: 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 8rpx 24rpx rgba(10, 33, 55, 0.04);
+}
+.expand-trigger {
+  margin-top: 18rpx;
+  padding: 16rpx 22rpx;
+  background: #f2f5f3;
+  border: 1rpx solid #ced8d2;
+  border-radius: 8rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: var(--navy);
+  font-weight: 600;
+}
+.expand-body {
+  margin-top: 16rpx;
+  padding: 20rpx;
+  background: #f9faf8;
+  border-left: 6rpx solid var(--gold);
+  border-radius: 6rpx;
+}
+
+/* 6. 按钮规范 */
+.btn-gold {
+  background: var(--gold-soft);
+  color: var(--navy);
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 20rpx 32rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  border: none;
+}
+.btn-navy {
+  background: var(--navy);
+  color: #ffffff;
+  font-size: 26rpx;
+  font-weight: 600;
+  padding: 20rpx 32rpx;
+  border-radius: 8rpx;
+  text-align: center;
+  border: none;
+}
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+  border: 2rpx solid #b2c0bc;
+  font-size: 26rpx;
+  font-weight: 500;
+  padding: 18rpx 32rpx;
+  border-radius: 8rpx;
+  text-align: center;
+}
+
+/* 7. 页脚 */
+.hkmu-mini-footer {
+  background: var(--navy-deep);
+  color: #8fa5b5;
+  border-top: 6rpx solid var(--gold);
+  padding: 40rpx 28rpx 48rpx;
+  font-size: 22rpx;
+}
+.footer-slogan {
+  color: var(--gold-soft);
+  font-size: 24rpx;
+  font-weight: 600;
+  margin-bottom: 10rpx;
+  display: block;
+}

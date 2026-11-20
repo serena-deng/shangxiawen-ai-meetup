@@ -1,0 +1,8 @@
+.preview-payment-note{font-size:11px;color:#7b6144}
+.hero{background:radial-gradient(circle at 76% 45%,#335d78 0%,#173d59 35%,#0a2137 72%)}
+.hero-art{inset:0 0 0 42%;background:none;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.hero-art:after{display:none}.mascot-interactive{pointer-events:auto;position:relative;border:0;background:none;padding:0;width:min(56vw,620px);cursor:pointer;transform:translate(var(--mx,0px),var(--my,0px)) rotate(var(--mr,0deg));transition:transform .45s ease;filter:drop-shadow(0 24px 38px #e4c39835)}
+.mascot-interactive img{width:100%;height:auto;animation:mascot-float 5.5s ease-in-out infinite}.mascot-interactive.is-waving img{animation:mascot-wave .9s ease-in-out 2}.mascot-hint{position:absolute;bottom:6%;left:50%;transform:translateX(-50%);color:#e4c398;font-size:11px;letter-spacing:2px;white-space:nowrap;opacity:.8}
+@keyframes mascot-float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-20px) rotate(2deg)}}@keyframes mascot-wave{0%,100%{transform:rotate(0)}35%{transform:rotate(-8deg) scale(1.04)}70%{transform:rotate(6deg)}}
+@media(max-width:760px){.hero-art{inset:160px -9% 10px 22%;opacity:.52}.mascot-interactive{width:min(88vw,480px)}.mascot-hint{display:none}}
+@media(prefers-reduced-motion:reduce){.mascot-interactive,.mascot-interactive img{animation:none!important;transition:none!important}}

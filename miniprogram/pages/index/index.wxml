@@ -1,0 +1,266 @@
+<!-- pages/index/index.wxml (香港都会大学门户式排版 + 渐进式披露 UI) -->
+<view class="page-container">
+
+  <!-- 1. Top Utility Bar (受众角色快速通道) -->
+  <view class="utility-bar">
+    <view class="utility-roles">
+      <text class="utility-label">角色通道：</text>
+      <text class="role-chip" bindtap="goPartners" data-side="company">企业与渠道 (B端)</text>
+      <text class="role-chip" bindtap="goFde">准 FDE 学员</text>
+      <text class="role-chip active">社区探索者</text>
+    </view>
+  </view>
+
+  <!-- 2. Main Brand Header -->
+  <view class="brand-header">
+    <view class="brand-left">
+      <image class="brand-logo" src="/assets/shangxiawen-logo.png" mode="aspectFit" />
+      <view class="brand-title-wrap">
+        <text class="brand-title">上下闻 SHANGXIAWEN</text>
+        <text class="brand-sub">AI DELIVERY & COMMUNITY</text>
+      </view>
+    </view>
+    <view class="portal-pill" bindtap="goCard">MySXW 名片 ↗</view>
+  </view>
+
+  <!-- 3. HKMU 3-Slide Hero Banner Carousel -->
+  <swiper class="hero-swiper" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,0.3)" indicator-active-color="#e4c398" autoplay="{{true}}" interval="5500" circular="{{true}}">
+    <!-- Slide 01 -->
+    <swiper-item>
+      <view class="hero-slide">
+        <image class="hero-mascot {{isWaving ? 'waving' : ''}}" src="/assets/spirit-cutout.webp" mode="aspectFit" bindtap="tapMascot" />
+        <view class="hero-copy">
+          <text class="hero-eyebrow">● 焦点 01 / 社区与交付人才供应链</text>
+          <text class="hero-h1">让灵感碰撞，\n让 AI <text class="gold-em">真正落地交付。</text></text>
+          <text class="hero-intro">上接企业与咨询渠道真实项目，下连认证 FDE 工程师与超级个体。</text>
+          <view class="hero-btns">
+            <view class="btn-gold" bindtap="scrollToHub">查看活动日程 ↓</view>
+            <view class="hero-link" bindtap="tapMascot">轻触精灵打招呼 ✳</view>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+
+    <!-- Slide 02 -->
+    <swiper-item>
+      <view class="hero-slide">
+        <view class="hero-copy full">
+          <text class="hero-eyebrow">● 焦点 02 / FDE COMPETENCY MODEL v1.0</text>
+          <text class="hero-h1">AI 时代最缺的，\n是<text class="gold-em">能驻场交付的人。</text></text>
+          <text class="hero-intro">围绕业务诊断、RAG 知识库、Agent 工作流等 6 大模块，培养并认证标准化 AI 交付人才。</text>
+          <view class="hero-btns">
+            <view class="btn-gold" bindtap="goFde">进入 FDE 能力学院 ↗</view>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+
+    <!-- Slide 03 -->
+    <swiper-item>
+      <view class="hero-slide">
+        <view class="hero-copy full">
+          <text class="hero-eyebrow">● 焦点 03 / B2B 企业交付伙伴计划</text>
+          <text class="hero-h1">你有客户与场景，\n我们出<text class="gold-em">FDE 与交付质量。</text></text>
+          <text class="hero-intro">面向咨询/培训机构与 AI 产品商提供背靠背分包、人天派驻与 AI 销售人才输送。</text>
+          <view class="hero-btns">
+            <view class="btn-gold" bindtap="goPartners" data-side="company">企业交付合作专页 ↗</view>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+
+  <!-- 4. HKMU Floating Quick Pathway Dock (悬浮快速向导与四宫格入口) -->
+  <view class="quick-dock">
+    <view class="dock-picker-bar">
+      <text class="dock-label">⚡ 快速向导：</text>
+      <picker mode="selector" range="{{pathways}}" range-key="label" value="{{pathwayIndex}}" bindchange="onPathwayChange">
+        <view class="picker-val">{{pathways[pathwayIndex].label}} ▾</view>
+      </picker>
+      <view class="dock-go-btn" bindtap="execPathway">直达 →</view>
+    </view>
+
+    <view class="dock-cards">
+      <view class="dock-card" bindtap="scrollToHub">
+        <text class="dc-num">01 / EVENTS</text>
+        <text class="dc-title">活动与日历</text>
+        <text class="dc-sub">往期复盘与预告</text>
+      </view>
+      <view class="dock-card" bindtap="goFde">
+        <text class="dc-num">02 / ACADEMY</text>
+        <text class="dc-title">FDE 学院</text>
+        <text class="dc-sub">6模块 · 证书查验</text>
+      </view>
+      <view class="dock-card" bindtap="goCard">
+        <text class="dc-num">03 / STUDIO</text>
+        <text class="dc-title">AI 名片工坊</text>
+        <text class="dc-sub">4步生成保存相册</text>
+      </view>
+      <view class="dock-card" bindtap="goPartners" data-side="provider">
+        <text class="dc-num">04 / PARTNERS</text>
+        <text class="dc-title">交付合作</text>
+        <text class="dc-sub">上下游项目对接</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. Institutional Key Figures Strip (都会大学式关键指标带) -->
+  <view class="stats-strip">
+    <view class="stat-cell">
+      <text class="stat-num">6 大模块</text>
+      <text class="stat-label">FDE 能力标准</text>
+    </view>
+    <view class="stat-cell">
+      <text class="stat-num">3 档进阶</text>
+      <text class="stat-label">认证进派单池</text>
+    </view>
+    <view class="stat-cell">
+      <text class="stat-num">2 条 B 端线</text>
+      <text class="stat-label">分包 & 人才输送</text>
+    </view>
+    <view class="stat-cell">
+      <text class="stat-num">100% 本地</text>
+      <text class="stat-label">隐私保护零追踪</text>
+    </view>
+  </view>
+
+  <!-- 6. 都会大学标志性：活动日程徽章 + 往期焦点回顾 (渐进式披露) -->
+  <view class="section-wrap" id="hub-section">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">01 / HIGHLIGHTS & CALENDAR</text>
+      <text class="sec-title">社区活动日程与焦点回顾</text>
+      <text class="sec-desc">先选视图或期数，点击卡片内部可渐进展开 4 大环节与现场照片。</text>
+    </view>
+
+    <!-- 渐进式胶囊切换：看焦点回顾 vs 看日程预告 -->
+    <view class="pill-bar">
+      <view class="pill-btn {{hubTab === 'second' ? 'active' : ''}}" bindtap="switchHubTab" data-tab="second">
+        <text>第二期 · AIGC共创局</text>
+        <text class="pill-sub">2026.11.08 焦点回顾</text>
+      </view>
+      <view class="pill-btn {{hubTab === 'first' ? 'active' : ''}}" bindtap="switchHubTab" data-tab="first">
+        <text>第一期 · AI怎么玩</text>
+        <text class="pill-sub">2026.10.25 现场回顾</text>
+      </view>
+      <view class="pill-btn {{hubTab === 'calendar' ? 'active' : ''}}" bindtap="switchHubTab" data-tab="calendar">
+        <text>📅 活动日程表</text>
+        <text class="pill-sub">闭门会 & 沙龙预告</text>
+      </view>
+    </view>
+
+    <!-- 面板 A：第二期回顾 -->
+    <view class="card-box" wx:if="{{hubTab === 'second'}}">
+      <image class="event-cover" src="/assets/events/aigc-2026-11-08-4.webp" mode="aspectFill" bindtap="previewEventImage" data-urls="{{secondEventPhotos}}" data-current="/assets/events/aigc-2026-11-08-4.webp" />
+      <view class="event-meta">2026 年 11 月 8 日 · 深圳华侨城晓宇宙咖啡馆</view>
+      <view class="event-h3">第二期：AIGC 共创局</view>
+      <view class="event-desc">从主题分享走向围桌交流。大家带着自己的想法和电脑，在现场讨论 AIGC 创作、电商商品图生成、短剧分镜与跨行业应用。</view>
+
+      <!-- 渐进式展开：4 个环节 -->
+      <view class="expand-trigger" bindtap="toggleExpand" data-key="secondProgram">
+        <text>渐进展开：查看第二期的 4 个核心环节</text>
+        <text>{{expanded.secondProgram ? '－ 收起' : '＋ 展开'}}</text>
+      </view>
+      <view class="expand-body" wx:if="{{expanded.secondProgram}}">
+        <view class="prog-item" wx:for="{{secondPrograms}}" wx:key="title">
+          <text class="prog-title">{{item.title}}</text>
+          <text class="prog-detail">{{item.detail}}</text>
+        </view>
+      </view>
+
+      <!-- 渐进式展开：现场图集 -->
+      <view class="expand-trigger" bindtap="toggleExpand" data-key="secondGallery">
+        <text>渐进展开：浏览另外 3 张现场照片（点击可放大）</text>
+        <text>{{expanded.secondGallery ? '－ 收起' : '＋ 展开'}}</text>
+      </view>
+      <view class="gallery-grid" wx:if="{{expanded.secondGallery}}">
+        <image wx:for="{{secondEventPhotos}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="gallery-thumb" bindtap="previewEventImage" data-urls="{{secondEventPhotos}}" data-current="{{item}}" />
+      </view>
+    </view>
+
+    <!-- 面板 B：第一期回顾 -->
+    <view class="card-box" wx:if="{{hubTab === 'first'}}">
+      <image class="event-cover" src="/assets/events/ai-meetup-2026-10-25-1.webp" mode="aspectFill" bindtap="previewEventImage" data-urls="{{firstEventPhotos}}" data-current="/assets/events/ai-meetup-2026-10-25-1.webp" />
+      <view class="event-meta">2026 年 10 月 25 日 · 深圳华侨城晓宇宙咖啡</view>
+      <view class="event-h3">第一期：AI 怎么玩儿起来</view>
+      <view class="event-desc">现场有来自制造业、金融业的参与者，也有 00 后 AI 硬件创业者。大家一起聊 AI 能做什么、怎样把点子带进真实工作。</view>
+
+      <view class="expand-trigger" bindtap="toggleExpand" data-key="firstProgram">
+        <text>渐进展开：查看第一期的 4 个核心环节</text>
+        <text>{{expanded.firstProgram ? '－ 收起' : '＋ 展开'}}</text>
+      </view>
+      <view class="expand-body" wx:if="{{expanded.firstProgram}}">
+        <view class="prog-item" wx:for="{{firstPrograms}}" wx:key="title">
+          <text class="prog-title">{{item.title}}</text>
+          <text class="prog-detail">{{item.detail}}</text>
+        </view>
+      </view>
+
+      <view class="expand-trigger" bindtap="toggleExpand" data-key="firstGallery">
+        <text>渐进展开：浏览现场高清照片（点击可放大）</text>
+        <text>{{expanded.firstGallery ? '－ 收起' : '＋ 展开'}}</text>
+      </view>
+      <view class="gallery-grid" wx:if="{{expanded.firstGallery}}">
+        <image wx:for="{{firstEventPhotos}}" wx:key="*this" src="{{item}}" mode="aspectFill" class="gallery-thumb" bindtap="previewEventImage" data-urls="{{firstEventPhotos}}" data-current="{{item}}" />
+      </view>
+    </view>
+
+    <!-- 面板 C：都会大学式日期徽章活动日历 -->
+    <view class="card-box" wx:if="{{hubTab === 'calendar'}}">
+      <view class="date-row" wx:for="{{calendarEvents}}" wx:key="title">
+        <view class="date-badge {{item.upcoming ? 'upcoming' : ''}}">
+          <text class="db-month">{{item.month}}</text>
+          <text class="db-day">{{item.day}}</text>
+        </view>
+        <view class="date-info">
+          <text class="date-tag {{item.upcoming ? 'gold' : ''}}">{{item.status}}</text>
+          <text class="date-title">{{item.title}}</text>
+          <text class="date-desc">{{item.desc}}</text>
+          <view class="date-link" wx:if="{{item.actionTab}}" bindtap="switchHubTab" data-tab="{{item.actionTab}}">查看本期现场回顾 →</view>
+          <view class="date-link" wx:if="{{item.goPartner}}" bindtap="goPartners" data-side="company">申请闭门会席位 / 探讨需求 →</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 7. 认识上下闻 & 渐进式 FAQ -->
+  <view class="section-wrap" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">02 / ABOUT & FAQ</text>
+      <text class="sec-title">好奇心在上，烟火气在下</text>
+    </view>
+
+    <view class="card-box">
+      <image class="event-cover" style="height:260rpx" src="/assets/lounge.webp" mode="aspectFill" />
+      <view class="event-desc" style="margin-top:16rpx">我们是上下闻，一个从深圳生长出来的 AI 玩家交流社区与交付人才网络。上游连接有真实业务场景的企业与方案商，下游连接具备实操能力的 FDE、AI 销售与超级个体。</view>
+      <view class="expand-trigger" bindtap="toggleExpand" data-key="aboutOrigin">
+        <text>展开了解：「上下相闻」双边商业飞轮</text>
+        <text>{{expanded.aboutOrigin ? '－ 收起' : '＋ 展开'}}</text>
+      </view>
+      <view class="expand-body" wx:if="{{expanded.aboutOrigin}}">
+        <view class="prog-item">
+          <text class="prog-title">上：企业与咨询/培训渠道需求</text>
+          <text class="prog-detail">拥有客户与场景，通过背靠背分包、人天派驻或人才输送获得可靠的 AI 落地交付。</text>
+        </view>
+        <view class="prog-item" style="margin-bottom:0">
+          <text class="prog-title">下：认证 FDE 工程师与 AI 销售</text>
+          <text class="prog-detail">通过 FDE 6 大模块考核进入官方人才池，师徒制带队实战接单。</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 渐进式手风琴 FAQ -->
+    <view class="faq-item" wx:for="{{faqs}}" wx:key="q" bindtap="toggleFaq" data-idx="{{index}}">
+      <view class="faq-q">
+        <text>{{item.q}}</text>
+        <text class="faq-icon">{{item.open ? '－' : '＋'}}</text>
+      </view>
+      <view class="faq-a" wx:if="{{item.open}}">{{item.a}}</view>
+    </view>
+  </view>
+
+  <!-- 8. 页脚 -->
+  <view class="hkmu-mini-footer">
+    <text class="footer-slogan">在交流中生长，让灵感上下相闻。</text>
+    <text>© 2026 上下闻 (SHANGXIAWEN AI COMMUNITY & DELIVERY) · 深圳</text>
+  </view>
+</view>

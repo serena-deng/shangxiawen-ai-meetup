@@ -1,0 +1,328 @@
+/* pages/fde/fde.wxss */
+.fde-hero {
+  background: var(--navy);
+  color: #ffffff;
+  padding: 36rpx 30rpx 40rpx;
+}
+.fde-badge {
+  display: inline-block;
+  font-size: 20rpx;
+  color: var(--gold-soft);
+  border: 1rpx solid rgba(228, 195, 152, 0.4);
+  padding: 6rpx 18rpx;
+  border-radius: 30rpx;
+  margin-bottom: 16rpx;
+}
+.fde-h1 {
+  display: block;
+  font-size: 44rpx;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 14rpx;
+}
+.gold-em {
+  color: var(--gold-soft);
+}
+.fde-lead {
+  display: block;
+  font-size: 24rpx;
+  color: #b8c9d6;
+  line-height: 1.7;
+}
+.hero-compare-trigger {
+  margin-top: 22rpx;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1rpx solid rgba(255, 255, 255, 0.18);
+  padding: 16rpx 22rpx;
+  border-radius: 8rpx;
+  display: flex;
+  justify-content: space-between;
+  font-size: 23rpx;
+  color: var(--gold-soft);
+}
+.hero-compare-box {
+  margin-top: 14rpx;
+  background: #10324a;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  font-size: 22rpx;
+  color: #d6e2ec;
+}
+.cmp-row {
+  margin-bottom: 12rpx;
+}
+.cmp-row:last-child {
+  margin-bottom: 0;
+}
+.cmp-k {
+  color: var(--gold-soft);
+  font-weight: 700;
+}
+
+/* 6大模块网格选择器 */
+.mod-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14rpx;
+  margin-bottom: 22rpx;
+}
+.mod-chip {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 10rpx;
+  padding: 18rpx 14rpx;
+  text-align: center;
+}
+.mod-chip.active {
+  background: var(--navy);
+  border-color: var(--navy);
+  color: #ffffff;
+  box-shadow: 0 8rpx 20rpx rgba(10, 33, 55, 0.16);
+}
+.mc-num {
+  display: block;
+  font-size: 20rpx;
+  font-weight: 700;
+  color: var(--gold);
+}
+.mod-chip.active .mc-num {
+  color: var(--gold-soft);
+}
+.mc-name {
+  display: block;
+  font-size: 23rpx;
+  font-weight: 600;
+  margin-top: 4rpx;
+}
+
+/* 模块详情舞台 */
+.mod-stage {
+  border-top: 6rpx solid var(--teal);
+}
+.ms-code {
+  display: block;
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: var(--teal);
+  font-weight: 700;
+}
+.ms-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 8rpx 0 12rpx;
+}
+.ms-desc {
+  display: block;
+  font-size: 25rpx;
+  color: #495d69;
+  line-height: 1.75;
+}
+.ms-meta-box {
+  margin-top: 22rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid var(--border);
+}
+.ms-row {
+  margin-bottom: 14rpx;
+  font-size: 24rpx;
+}
+.ms-label {
+  font-weight: 700;
+  color: var(--navy);
+  display: block;
+}
+.ms-val {
+  color: var(--muted);
+}
+.ms-footer {
+  margin-top: 22rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx dashed var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ms-prog {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+.ms-next-btn {
+  background: #eef3f1;
+  color: var(--navy);
+  font-size: 23rpx;
+  font-weight: 600;
+  padding: 10rpx 22rpx;
+  border-radius: 6rpx;
+}
+
+/* 三档培养舞台 */
+.tier-stage.featured {
+  background: var(--navy);
+  color: #ffffff;
+  border-color: var(--navy);
+}
+.ts-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+.ts-badge {
+  font-size: 20rpx;
+  padding: 6rpx 14rpx;
+  border-radius: 6rpx;
+  background: #e5ece8;
+  color: var(--navy);
+  font-weight: 700;
+}
+.tier-stage.featured .ts-badge {
+  background: var(--gold-soft);
+}
+.ts-price {
+  font-size: 38rpx;
+  font-weight: 700;
+  color: var(--gold);
+}
+.tier-stage.featured .ts-price {
+  color: var(--gold-soft);
+}
+.ts-title {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 700;
+  margin-bottom: 10rpx;
+}
+.ts-desc {
+  display: block;
+  font-size: 24rpx;
+  opacity: 0.85;
+  margin-bottom: 20rpx;
+}
+.ts-list {
+  border-top: 1rpx solid rgba(150, 165, 175, 0.25);
+  padding-top: 18rpx;
+  margin-bottom: 24rpx;
+}
+.ts-item {
+  display: flex;
+  gap: 12rpx;
+  font-size: 24rpx;
+  margin-bottom: 12rpx;
+}
+.ts-check {
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* 证书核验 */
+.verify-row {
+  display: flex;
+  gap: 14rpx;
+  margin-top: 18rpx;
+}
+.verify-input {
+  flex: 1;
+  height: 76rpx;
+  border: 1rpx solid #c2cdc8;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  background: #f9faf8;
+  font-size: 25rpx;
+}
+.sample-chips {
+  margin-top: 14rpx;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10rpx;
+  font-size: 21rpx;
+}
+.sample-label {
+  color: var(--muted);
+}
+.sample-chip {
+  background: #edf2f0;
+  color: var(--teal);
+  padding: 4rpx 14rpx;
+  border-radius: 6rpx;
+  font-weight: 600;
+}
+.verify-res {
+  margin-top: 18rpx;
+  padding: 20rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+.verify-res.pass {
+  background: #e7f3ed;
+  color: #1c543d;
+  border: 1rpx solid #b7dcc8;
+}
+.verify-res.warn {
+  background: #f9f1e6;
+  color: #7a5221;
+  border: 1rpx solid #e6cfa8;
+}
+
+/* 闻闻拆解 */
+.wenwen-box {
+  background: #141d38;
+  color: #ffffff;
+}
+.wenwen-img {
+  width: 100%;
+  height: 360rpx;
+  border-radius: 10rpx;
+  background: #1d4db4;
+}
+.wenwen-hint {
+  display: block;
+  text-align: center;
+  font-size: 20rpx;
+  color: #9fb0d0;
+  margin-top: 10rpx;
+}
+.anat-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12rpx;
+  margin-top: 22rpx;
+}
+.anat-tab {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1rpx solid rgba(255, 255, 255, 0.16);
+  padding: 14rpx;
+  border-radius: 8rpx;
+  font-size: 23rpx;
+  text-align: center;
+  color: #cfd9ee;
+}
+.anat-tab.active {
+  background: #f5cb7a;
+  color: #141a33;
+  border-color: #f5cb7a;
+  font-weight: 700;
+}
+.anat-detail {
+  margin-top: 18rpx;
+  background: rgba(255, 255, 255, 0.07);
+  padding: 22rpx;
+  border-radius: 8rpx;
+}
+.ad-title {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #f5cb7a;
+  margin-bottom: 8rpx;
+}
+.ad-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #d6e0f5;
+  line-height: 1.75;
+}

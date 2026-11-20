@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#092d39">
+  <meta name="description" content="上下闻 FDE（前线部署工程师）能力模型 v1.0、6 大考核模块、三级认证体系、证书核验与品牌精灵闻闻设定。">
+  <title>FDE 能力模型与认证体系 · 上下闻</title>
+  <link rel="icon" href="/assets/shangxiawen-logo.png" type="image/png">
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/progressive.css">
+  <link rel="stylesheet" href="/hkmu-portal.css">
+  <style>
+    .fde-hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 6px 14px; border: 1px solid #527176; border-radius: 30px; font-size: 11px; color: var(--gold); background: #ffffff0a; margin-bottom: 16px; }
+    .definition-box { background: #103943; border: 1px solid #3f6068; border-radius: 6px; padding: 28px 32px; color: #e8ece8; }
+    .definition-box h3 { font-family: var(--serif); font-size: 24px; color: var(--gold); margin-bottom: 12px; }
+    .definition-box p { font-size: 13px; color: #b7c8c9; line-height: 1.95; }
+    .definition-compare { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #ffffff1a; }
+    .definition-compare div strong { display: block; font-size: 12px; color: #f4f2e8; margin-bottom: 4px; }
+    .definition-compare div span { font-size: 11px; color: #95aeb0; line-height: 1.6; display: block; }
+
+    .tiers-section { background: var(--sage); }
+    .tier-single-stage { max-width: 780px; }
+    .tier-card { background: #fcfbf7; border: 1px solid #cfd6cc; border-radius: 7px; padding: 34px 36px; display: flex; flex-direction: column; position: relative; }
+    .tier-card.featured { background: var(--sea); color: var(--paper); border-color: var(--sea); box-shadow: 0 18px 40px #092d391c; }
+    .tier-badge { display: inline-block; align-self: flex-start; font-size: 10px; letter-spacing: 1.5px; padding: 4px 10px; border-radius: 3px; background: #e5ebe2; color: #476056; margin-bottom: 14px; }
+    .tier-card.featured .tier-badge { background: var(--gold); color: var(--sea); font-weight: 600; }
+    .tier-header-row { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 16px; }
+    .tier-card h3 { font-family: var(--serif); font-size: 29px; margin: 0; }
+    .tier-price { font-family: Georgia, serif; font-size: 36px; color: var(--brass); }
+    .tier-card.featured .tier-price { color: var(--gold); }
+    .tier-price small { font-size: 13px; font-family: sans-serif; color: var(--muted); font-weight: 400; }
+    .tier-card.featured .tier-price small { color: #9ab3b6; }
+    .tier-desc { font-size: 14px; line-height: 1.9; color: var(--muted); margin: 14px 0 22px; }
+    .tier-card.featured .tier-desc { color: #b9cccc; }
+    .tier-list { list-style: none; padding: 0; margin: 0 0 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; font-size: 13px; border-top: 1px solid #dfe4dc; padding-top: 20px; }
+    .tier-card.featured .tier-list { border-color: #ffffff1f; color: #dce5e5; }
+    .tier-list li { position: relative; padding-left: 20px; }
+    .tier-list li::before { content: "✓"; position: absolute; left: 0; color: var(--brass); font-weight: bold; }
+    .tier-card.featured .tier-list li::before { color: var(--gold); }
+
+    .verify-box { background: #fffdf8; border: 1px solid var(--line); border-radius: 6px; padding: 32px 36px; margin-top: 38px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 36px; align-items: center; }
+    .verify-form { display: flex; gap: 12px; margin-top: 16px; }
+    .verify-form input { flex: 1; padding: 12px 16px; border: 1px solid #c5cec4; border-radius: 3px; background: #f8f9f5; font-size: 13px; color: var(--ink); }
+    .verify-result { margin-top: 16px; padding: 16px 20px; border-radius: 4px; background: #eef2ec; font-size: 12px; line-height: 1.85; color: #365249; }
+
+    .wenwen-section { background: #141d38; color: #f3f5f9; overflow: hidden; }
+    .wenwen-grid { display: grid; grid-template-columns: .92fr 1.08fr; gap: 56px; align-items: center; }
+    .wenwen-stage { border-radius: 18px; padding: 32px 24px 26px; background: linear-gradient(180deg, #1D4DB4 0%, #3567C6 40%, #86A2D6 76%, #C6D1E4 100%); position: relative; text-align: center; box-shadow: 0 20px 50px rgba(8, 15, 38, 0.45); }
+    .wenwen-stage svg { width: 100%; max-width: 330px; height: auto; margin: 0 auto; display: block; }
+    .mood-switcher { display: flex; justify-content: center; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+    .mood-switcher button { border: 1px solid rgba(255,255,255,0.4); background: rgba(20, 29, 71, 0.55); color: #fff; padding: 6px 14px; border-radius: 20px; font-size: 12px; backdrop-filter: blur(4px); transition: .2s; }
+    .mood-switcher button.active { background: #F5CB7A; color: #141A33; border-color: #F5CB7A; font-weight: 600; }
+
+    .anatomy-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .anatomy-tab { border: 1px solid rgba(255,255,255,0.2); background: rgba(255,255,255,0.05); color: #c7d2e8; padding: 9px 15px; border-radius: 6px; font-size: 12px; transition: .18s; }
+    .anatomy-tab[aria-selected="true"] { background: #F5CB7A; color: #141A33; border-color: #F5CB7A; font-weight: 600; }
+    .anatomy-detail-card { margin-top: 16px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14); border-radius: 10px; padding: 22px 24px; }
+    .anatomy-detail-card strong { display: block; font-size: 17px; color: #F5CB7A; margin-bottom: 8px; }
+    .anatomy-detail-card p { font-size: 13.5px; color: #d5def0; line-height: 1.85; }
+
+    @media (max-width: 960px) {
+      .verify-box, .wenwen-grid, .definition-compare, .tier-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip-link" href="#main">跳到主要内容</a>
+<div class="hkmu-utility-bar" role="navigation" aria-label="受众角色快速通道">
+  <div class="hkmu-utility-inner">
+    <div class="hkmu-audience-links">
+      <span class="hkmu-audience-label">ROLE PORTALS 角色通道：</span>
+      <a href="/partners.html">企业与渠道方 (B端)</a>
+      <a href="#programs" aria-current="true">准 FDE 学员</a>
+      <a href="#verify">持证 FDE / AI 销售</a>
+      <a href="/index.html#gathering">社区探索者</a>
+    </div>
+    <div class="hkmu-utility-right">
+      <a href="#verify" class="hkmu-quick-search-btn"><span>🔍 证书编号核验</span></a>
+      <a href="/index.html#card-studio" class="hkmu-portal-pill"><span>MySXW · AI 名片工坊 ↗</span></a>
+    </div>
+  </div>
+</div>
+<header class="header-shell" id="top">
+  <div class="header wrap">
+    <a class="brand" href="/" aria-label="上下闻首页"><img src="/assets/shangxiawen-logo.png" width="1947" height="808" alt="上下闻"><span>AI COMMUNITY &amp; DELIVERY</span></a>
+    <nav aria-label="主导航">
+      <a href="/">首页</a>
+      <a href="#fde-model">能力模型</a>
+      <a href="#programs">认证与培养</a>
+      <a href="#verify">证书核验</a>
+      <a href="#wenwen-ip">闻闻设定</a>
+      <a href="/partners.html">交付合作</a>
+    </nav>
+    <a class="nav-contact" href="/partners.html#contact">联系运营 <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="hero-wrap">
+    <section class="hero wrap" aria-labelledby="fde-hero-heading">
+      <div class="hero-copy">
+        <div class="fde-hero-badge"><span class="small-dot" style="margin:0"></span> STANDARD v1.0 · 2026-11 公开标准</div>
+        <h1 id="fde-hero-heading">AI 时代最缺的，<br>是<span>能把方案交付的人。</span></h1>
+        <p class="hero-lead">上下闻 FDE（Forward Deployed Engineer，前线部署工程师）能力模型与认证体系：连接上游真实企业需求，标准化培养并认证下游 AI 交付人才。</p>
+        <div class="actions">
+          <a class="button gold" href="#fde-model">逐项探索 6 大能力模块 <span aria-hidden="true">↓</span></a>
+          <a class="quiet-link" href="#verify">持证人才编号核验 <span aria-hidden="true">→</span></a>
+        </div>
+        <p class="hero-note">上：企业与咨询/培训渠道项目 ↕ 上下相闻 ↕ 下：认证 FDE、AI 销售与超级个体</p>
+      </div>
+      <div class="definition-box">
+        <p class="eyebrow" style="color:#d8bd99">WHAT IS AN AI FDE?</p>
+        <h3>什么是 FDE（前线部署工程师）？</h3>
+        <p>企业落地 AI 往往不缺大模型，而缺能够深入业务现场、听懂真实痛点、将工作流与知识库配置调通并交付给客户团队使用的复合型工程伙伴。</p>
+        <p style="margin-top:10px">在上下闻交付网络中，人才池由两类核心角色构成：负责动手落地与集成的 <strong>FDE 工程师</strong>，以及擅长拆解需求、讲清方案并促成合作的 <strong>AI 销售顾问</strong>。</p>
+        <!-- 渐进式披露：岗位对比默认折叠 -->
+        <details style="margin-top:14px">
+          <summary style="cursor:pointer;font-size:12px;color:var(--gold)">展开对比：FDE 与传统算法 / 售前 / 外包有什么区别？ ＋</summary>
+          <div class="definition-compare">
+            <div>
+              <strong>对比传统算法工程师</strong>
+              <span>不局限于底层模型训练，专注业务场景应用、RAG 调优与最后十米交付。</span>
+            </div>
+            <div>
+              <strong>对比传统售前顾问</strong>
+              <span>不止于 PPT 方案演示，能现场搭建可验证的 POC 原型与自动化工作流。</span>
+            </div>
+            <div>
+              <strong>对比普通软件外包</strong>
+              <span>懂 AI 边界与 Prompt/Agent 范式，兼顾效果评估、异常接管与客户团队赋能。</span>
+            </div>
+          </div>
+        </details>
+      </div>
+    </section>
+  </div>
+
+  <!-- 01. 渐进式主从浏览：FDE 能力模型 6 大模块（左侧选模块，右侧展示对应的考核详情） -->
+  <section class="section wrap" id="fde-model" aria-labelledby="model-heading">
+    <div class="section-head" style="margin-bottom:24px">
+      <div>
+        <p class="eyebrow muted">01 / FDE COMPETENCY MODEL (PROGRESSIVE EXPLORER)</p>
+        <h2 id="model-heading">FDE 能力模型六大模块。</h2>
+      </div>
+      <p class="section-intro">点击左侧任一模块，右侧将渐进披露该模块的<strong>核心职责、标准交付物与实战考核方式</strong>。</p>
+    </div>
+
+    <div class="pd-master-detail">
+      <div class="pd-module-list" role="tablist" aria-label="FDE 六大能力模块">
+        <button type="button" class="pd-module-tab" role="tab" aria-selected="true" data-mod-idx="0">
+          <div class="left"><span class="num">M01</span><strong>业务诊断与需求边界</strong></div>
+          <span class="tag">需求拆解 →</span>
+        </button>
+        <button type="button" class="pd-module-tab" role="tab" aria-selected="false" data-mod-idx="1">
+          <div class="left"><span class="num">M02</span><strong>知识库治理与 RAG 检索</strong></div>
+          <span class="tag">准确率调优 →</span>
+        </button>
+        <button type="button" class="pd-module-tab" role="tab" aria-selected="false" data-mod-idx="2">
+          <div class="left"><span class="num">M03</span><strong>业务工作流与 Agent 编排</strong></div>
+          <span class="tag">流程自动化 →</span>
+        </button>
+        <button type="button" class="pd-module-tab" role="tab" aria-selected="false" data-mod-idx="3">
+          <div class="left"><span class="num">M04</span><strong>应用集成与环境部署</strong></div>
+          <span class="tag">API 与安全 →</span>
+        </button>
+        <button type="button" class="pd-module-tab" role="tab" aria-selected="false" data-mod-idx="4">
+          <div class="left"><span class="num">M05</span><strong>AI 方案沟通与价值销售</strong></div>
+          <span class="tag">POC 与报价 →</span>
+        </button>
+        <button type="button" class="pd-module-tab" role="tab" aria-selected="false" data-mod-idx="5">
+          <div class="left"><span class="num">M06</span><strong>交付验收、赋能与复盘</strong></div>
+          <span class="tag">SOP 与交接 →</span>
+        </button>
+      </div>
+
+      <div class="pd-module-detail-stage pd-view-panel" id="mod-detail-stage" role="tabpanel" aria-live="polite">
+        <div>
+          <span class="eyebrow muted" id="mod-code">MODULE 01 / 06 · 需求侧起点</span>
+          <h3 id="mod-title" style="font-family:var(--serif);font-size:30px;margin:12px 0 14px;color:var(--sea)">业务诊断与需求边界</h3>
+          <p id="mod-desc" style="font-size:14px;color:var(--muted);line-height:1.95">走进企业业务现场，识别哪些环节适合用 AI 改造、哪些应当保留人工规则，拦截伪需求并制定清晰的验收指标。</p>
+          <div style="margin-top:26px;padding-top:22px;border-top:1px solid #e2e6de;display:grid;gap:14px;font-size:13px">
+            <div><strong style="color:var(--sea);display:block;margin-bottom:3px">📦 标准交付产出：</strong><span id="mod-output" style="color:#4f645c">业务场景诊断书、ROI 测算与验收清单</span></div>
+            <div><strong style="color:var(--sea);display:block;margin-bottom:3px">🎯 实战考核方式：</strong><span id="mod-exam" style="color:#4f645c">真实企业案例需求拆解与防坑答辩</span></div>
+            <div><strong style="color:var(--sea);display:block;margin-bottom:3px">👥 重点适用角色：</strong><span id="mod-role" style="color:#4f645c">FDE 工程师、AI 销售顾问、方案负责人（必修）</span></div>
+          </div>
+        </div>
+        <div style="margin-top:28px;padding-top:18px;border-top:1px dashed #d5dcd2;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:var(--muted)" id="mod-progress">当前查看：第 1 / 6 模块</span>
+          <button type="button" class="pd-reveal-trigger" id="mod-next-btn" style="margin:0">查看下一模块：M02 知识库治理 →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02. 渐进式档位切换：三档培养与认证体系（默认聚焦推荐档位，点击胶囊切换） -->
+  <section class="section tiers-section" id="programs" aria-labelledby="tiers-heading">
+    <div class="wrap">
+      <div class="section-head" style="margin-bottom:28px">
+        <div>
+          <p class="eyebrow muted">02 / TRAINING &amp; CERTIFICATION TIERS</p>
+          <h2 id="tiers-heading">三档培养与认证体系：<br>按你的目标选择合适路径。</h2>
+        </div>
+        <p class="section-intro">我们遵循「先锁需求，再配供给」原则，按意向项目容量控制每期认证班名额。<br>点击下方角色标签，渐进查看对应档位的权益、价格与平台抽成规则。</p>
+      </div>
+
+      <div class="pd-pill-bar" role="tablist" aria-label="选择培养与认证档位">
+        <button type="button" class="pd-pill-btn" role="tab" aria-selected="true" data-tier-tab="tier2">
+          <span>★ TIER 02 · 认证 FDE 工程师</span>
+          <small>主力推荐 · 进人才池接单</small>
+        </button>
+        <button type="button" class="pd-pill-btn" role="tab" aria-selected="false" data-tier-tab="tier3">
+          <span>TIER 03 · FDE + AI 销售双栖班</span>
+          <small>可带队 · 可分销</small>
+        </button>
+        <button type="button" class="pd-pill-btn" role="tab" aria-selected="false" data-tier-tab="tier1">
+          <span>TIER 01 · AI 交付启航营</span>
+          <small>入门实战 · 暂不接单</small>
+        </button>
+      </div>
+
+      <div class="tier-single-stage">
+        <article class="tier-card featured pd-view-panel" data-tier-panel="tier2">
+          <span class="tier-badge">TIER 02 · 核心主力（推荐）</span>
+          <div class="tier-header-row">
+            <h3>认证 FDE 工程师</h3>
+            <div class="tier-price">¥1,999 <small>/ 期（规划参考）</small></div>
+          </div>
+          <p class="tier-desc">适合程序员、产品经理、技术转型者与超级个体。师徒制带队实战，考核通过后正式进入上下闻 FDE 交付人才池。</p>
+          <ul class="tier-list">
+            <li>包含启航营全部课程与 6 模块实战考核</li>
+            <li>导师带队参与真实或高仿真企业交付项目</li>
+            <li>通过考核授予「上下闻认证 FDE（L1–L3）」编号</li>
+            <li>进入官方 FDE 人才池，开放平台合作项目对接（平台服务抽成参考 20%）</li>
+          </ul>
+          <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap">
+            <a class="button gold" href="/partners.html#contact" style="width:auto">咨询认证与考核要求 <span>↗</span></a>
+            <span style="font-size:11px;color:#9ab3b6">支持结业后约定周期未派单退费保障条款（以正式协议为准）</span>
+          </div>
+        </article>
+
+        <article class="tier-card pd-view-panel" data-tier-panel="tier3" hidden>
+          <span class="tier-badge">TIER 03 · 复合伙伴</span>
+          <div class="tier-header-row">
+            <h3>FDE + AI 销售双栖班</h3>
+            <div class="tier-price">¥2,999 <small>/ 期（规划参考）</small></div>
+          </div>
+          <p class="tier-desc">适合咨询顾问、ToB 销售、运营主理人及 OPC 团队负责人。既懂技术交付边界，又能独立谈单与带队交付。</p>
+          <ul class="tier-list">
+            <li>涵盖 FDE 交付能力 + AI 销售谈单与陪跑方法论</li>
+            <li>进入 FDE 人才池 + AI 销售池双重对接网络</li>
+            <li>具备带人交付与渠道业务分销资格（平台服务抽成参考 15%）</li>
+            <li>优秀者可申请成为上下闻城市合伙人</li>
+          </ul>
+          <div>
+            <a class="button dark" href="/partners.html#contact" style="width:auto">了解双栖伙伴与城市合作 <span>↗</span></a>
+          </div>
+        </article>
+
+        <article class="tier-card pd-view-panel" data-tier-panel="tier1" hidden>
+          <span class="tier-badge">TIER 01 · 入门实战</span>
+          <div class="tier-header-row">
+            <h3>AI 交付启航营</h3>
+            <div class="tier-price">¥999 <small>/ 期（规划参考）</small></div>
+          </div>
+          <p class="tier-desc">适合希望掌握 FDE 六大模块基础方法、跑通从需求诊断到工作流搭建全流程的学习者与转型探索者。</p>
+          <ul class="tier-list">
+            <li>FDE 能力模型 6 大模块核心方法精讲</li>
+            <li>真实企业脱敏场景沙盘演练</li>
+            <li>上下闻校友社群与线下城市沙龙优先席位</li>
+            <li>结业颁发启航营完课证明（暂不进入派单池）</li>
+          </ul>
+          <div>
+            <a class="button dark" href="/partners.html#contact" style="width:auto">预约启航营名单 <span>↗</span></a>
+          </div>
+        </article>
+      </div>
+
+      <div class="verify-box" id="verify" aria-labelledby="verify-heading">
+        <div>
+          <p class="eyebrow muted">03 / CERTIFICATE VERIFICATION</p>
+          <h3 id="verify-heading" style="font-family:var(--serif);font-size:26px;margin:6px 0 8px">上下闻认证人才编号核验</h3>
+          <p style="font-size:12.5px;color:var(--muted);line-height:1.85">输入「上下闻 FDE / AI 销售认证编号」核验持证人状态与级别（L1–L3）。</p>
+          <form class="verify-form" id="verify-form">
+            <input type="text" id="cert-input" placeholder="输入编号，试一试：SXW-FDE-2026001" aria-label="证书编号">
+            <button type="submit" class="button dark" style="padding:12px 20px;min-height:0">立即核验</button>
+          </form>
+          <div class="verify-result" id="verify-result" hidden></div>
+        </div>
+        <div>
+          <details style="background:#f4f5ef;padding:18px 22px;border-radius:5px;border:1px solid #dce1d7;font-size:12px;line-height:1.85;color:#556860">
+            <summary style="cursor:pointer;color:var(--sea);font-weight:600">展开查看：关于认证性质与招生合规说明 ＋</summary>
+            <div style="margin-top:10px">
+              <p>1.「上下闻 FDE 认证」系上下闻平台基于企业实战需求制定的自有能力评估标准，非国家职业资格认证。</p>
+              <p style="margin-top:6px">2. 首批认证班严格遵循「先锁需求，再造供给」原则，待 B 端渠道合作签约达标后定向开启招生，具体开班排期与退费条款以正式协议为准。</p>
+            </div>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04. 闻闻 SVG 互动与渐进式部件拆解 -->
+  <section class="section wenwen-section" id="wenwen-ip" aria-labelledby="wenwen-heading">
+    <svg width="0" height="0" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="wwChrome" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#3B4150"></stop>
+          <stop offset="0.16" stop-color="#959DAD"></stop>
+          <stop offset="0.32" stop-color="#F6F8FC"></stop>
+          <stop offset="0.48" stop-color="#BAC1CD"></stop>
+          <stop offset="0.66" stop-color="#7D97CB"></stop>
+          <stop offset="0.85" stop-color="#454B5A"></stop>
+          <stop offset="1" stop-color="#C3CCDC"></stop>
+        </linearGradient>
+        <linearGradient id="wwPanel" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#26387A"></stop>
+          <stop offset="0.6" stop-color="#141D47"></stop>
+          <stop offset="1" stop-color="#0C1230"></stop>
+        </linearGradient>
+        <linearGradient id="wwEarFill" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0" stop-color="#F28A5E"></stop>
+          <stop offset="0.55" stop-color="#E5574A"></stop>
+          <stop offset="1" stop-color="#9E1A2E"></stop>
+        </linearGradient>
+        <linearGradient id="wwEyeFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#FFFFFF"></stop>
+          <stop offset="1" stop-color="#B9CCF5"></stop>
+        </linearGradient>
+        <g id="wwEar">
+          <path d="M -34 0 C -46 -48 -34 -116 -4 -148 Q 0 -152 4 -148 C 34 -116 46 -48 34 0 Z" fill="url(#wwEarFill)" stroke="#7A1424" stroke-width="1.2"></path>
+          <path d="M -20 -6 C -28 -44 -20 -96 0 -122 C 20 -96 28 -44 20 -6 Z" fill="#F5CB7A"></path>
+          <g fill="none" stroke="#9E1A2E" stroke-width="3" stroke-linecap="round">
+            <path d="M -9 -34 Q 0 -44 9 -34"></path>
+            <path d="M -13 -56 Q 0 -70 13 -56"></path>
+            <path d="M -12 -78 Q 0 -94 12 -78"></path>
+          </g>
+          <path d="M -26 -20 C -34 -60 -24 -110 -6 -136" fill="none" stroke="#FFD9C9" stroke-width="2.5" stroke-linecap="round" opacity="0.6"></path>
+        </g>
+        <g id="wwAntenna">
+          <path d="M 300 204 Q 293 180 302 158" fill="none" stroke="#8D95A6" stroke-width="5" stroke-linecap="round"></path>
+          <circle cx="302" cy="148" r="18" fill="#EE6650" opacity="0.28"></circle>
+          <circle cx="302" cy="148" r="10" fill="#EE6650" stroke="#9E1A2E" stroke-width="1.2"></circle>
+          <circle cx="298.5" cy="144.5" r="3" fill="#FFE1D6"></circle>
+        </g>
+        <g id="wwDoor">
+          <path d="M 200 300 A 100 100 0 0 1 400 300 L 400 372 Q 400 400 372 400 L 228 400 Q 200 400 200 372 Z" fill="url(#wwChrome)" stroke="#3F4655" stroke-width="1.4"></path>
+          <path d="M 210 296 A 91 91 0 0 1 262 217" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.8"></path>
+          <path d="M 218 302 A 82 82 0 0 1 382 302 L 382 366 Q 382 382 366 382 L 234 382 Q 218 382 218 366 Z" fill="url(#wwPanel)" stroke="#0A0F24" stroke-width="1"></path>
+          <path d="M 236 300 A 64 64 0 0 1 290 238" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.22"></path>
+        </g>
+        <g id="wwEyes">
+          <ellipse cx="266" cy="320" rx="21" ry="26" fill="#8FB0FF" opacity="0.18"></ellipse>
+          <ellipse cx="334" cy="320" rx="21" ry="26" fill="#8FB0FF" opacity="0.18"></ellipse>
+          <ellipse cx="266" cy="320" rx="13" ry="18" fill="url(#wwEyeFill)"></ellipse>
+          <ellipse cx="334" cy="320" rx="13" ry="18" fill="url(#wwEyeFill)"></ellipse>
+        </g>
+        <g id="wwBlush" fill="#EE6650" opacity="0.8">
+          <ellipse cx="238" cy="350" rx="12" ry="6"></ellipse>
+          <ellipse cx="362" cy="350" rx="12" ry="6"></ellipse>
+        </g>
+        <g id="wwBody">
+          <path d="M 238 458 C 220 462 206 474 200 490 C 197 498 205 503 210 497 C 216 486 226 480 240 478 Z" fill="url(#wwChrome)" stroke="#3F4655" stroke-width="1.2"></path>
+          <path d="M 362 456 C 378 450 390 438 396 422 C 399 414 408 416 406 425 C 402 444 388 464 366 474 Z" fill="url(#wwChrome)" stroke="#3F4655" stroke-width="1.2"></path>
+          <path d="M 246 396 C 222 420 214 470 236 506 C 252 532 286 540 296 560 C 304 576 290 592 270 604 C 252 616 258 636 300 640 C 342 640 352 626 334 616 C 318 606 322 590 326 578 C 334 556 360 540 366 506 C 376 470 370 424 354 396 Z" fill="url(#wwChrome)" stroke="#3F4655" stroke-width="1.4"></path>
+          <path d="M 252 414 C 236 440 234 474 248 498" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity="0.8"></path>
+          <path d="M 352 420 C 362 450 362 482 350 506" fill="none" stroke="#8EAEEB" stroke-width="4" stroke-linecap="round" opacity="0.6"></path>
+        </g>
+        <g id="wwBurst" fill="none" stroke="#E3EAF8" stroke-width="1.4" stroke-opacity="0.65" stroke-linecap="round">
+          <g transform="rotate(0 300 300)"><path d="M300 300 L300 76"></path><g transform="translate(300 59)"><rect x="-17" y="-17" width="34" height="34" rx="9" fill="#F5CB7A" stroke="none"></rect><text x="0" y="7" text-anchor="middle" font-family="serif" font-weight="900" font-size="20" fill="#9E1A2E" stroke="none">闻</text></g></g>
+          <g transform="rotate(-24 300 300)"><path d="M300 300 L300 96"></path><g transform="translate(300 79) rotate(24)"><rect x="-16" y="-16" width="32" height="32" rx="9" fill="#9E1A2E" stroke="none"></rect><text x="0" y="6.5" text-anchor="middle" font-family="serif" font-weight="900" font-size="19" fill="#FFFFFF" stroke="none">上</text></g></g>
+          <g transform="rotate(24 300 300)"><path d="M300 300 L300 100"></path><g transform="translate(300 83) rotate(-24)"><rect x="-16" y="-16" width="32" height="32" rx="9" fill="#9E1A2E" stroke="none"></rect><text x="0" y="6.5" text-anchor="middle" font-family="serif" font-weight="900" font-size="19" fill="#FFFFFF" stroke="none">下</text></g></g>
+          <g transform="rotate(-72 300 300)"><path d="M300 300 L300 88"></path><g transform="translate(300 71) rotate(72)"><rect x="-16" y="-16" width="32" height="32" rx="9" fill="#9E1A2E" stroke="none"></rect><text x="0" y="6.5" text-anchor="middle" font-family="serif" font-weight="900" font-size="19" fill="#F5CB7A" stroke="none">听</text></g></g>
+          <g transform="rotate(72 300 300)"><path d="M300 300 L300 88"></path><g transform="translate(300 71) rotate(-72)"><rect x="-16" y="-16" width="32" height="32" rx="9" fill="#EE6650" stroke="none"></rect><text x="0" y="6.5" text-anchor="middle" font-family="serif" font-weight="900" font-size="19" fill="#FFFFFF" stroke="none">聊</text></g></g>
+        </g>
+      </defs>
+    </svg>
+
+    <div class="wrap wenwen-grid">
+      <div class="wenwen-stage">
+        <p style="font-size:11px;letter-spacing:3px;color:#DCE6FA;margin-bottom:8px">WÉNWEN · 互动状态预览</p>
+        <svg id="ww-svg-listen" viewBox="0 0 600 660" role="img" aria-label="闻闻精灵：聆听状态">
+          <ellipse cx="300" cy="642" rx="100" ry="11" fill="#05070E" opacity="0.4"></ellipse>
+          <use href="#wwBody"></use>
+          <use href="#wwBurst"></use>
+          <use href="#wwEar" transform="translate(214 262) rotate(-28)"></use>
+          <use href="#wwEar" transform="translate(386 262) rotate(28) scale(-1 1)"></use>
+          <use href="#wwAntenna"></use>
+          <use href="#wwDoor"></use>
+          <use href="#wwEyes"></use>
+          <use href="#wwBlush"></use>
+          <path d="M 290 352 Q 300 362 310 352" fill="none" stroke="#F4F7FF" stroke-width="3.5" stroke-linecap="round"></path>
+        </svg>
+        <svg id="ww-svg-think" viewBox="0 0 600 660" role="img" aria-label="闻闻精灵：思考状态" hidden>
+          <ellipse cx="300" cy="642" rx="100" ry="11" fill="#05070E" opacity="0.4"></ellipse>
+          <use href="#wwBody"></use>
+          <use href="#wwBurst"></use>
+          <use href="#wwEar" transform="translate(214 262) rotate(-16)"></use>
+          <use href="#wwEar" transform="translate(386 266) rotate(46) scale(-1 1)"></use>
+          <use href="#wwAntenna"></use>
+          <use href="#wwDoor"></use>
+          <ellipse cx="272" cy="312" rx="12" ry="16" fill="url(#wwEyeFill)"></ellipse>
+          <ellipse cx="340" cy="312" rx="12" ry="16" fill="url(#wwEyeFill)"></ellipse>
+          <use href="#wwBlush"></use>
+          <circle cx="306" cy="355" r="5.5" fill="none" stroke="#F4F7FF" stroke-width="3"></circle>
+          <circle cx="300" cy="290" r="128" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="3 13" stroke-linecap="round" opacity="0.85"></circle>
+        </svg>
+        <svg id="ww-svg-happy" viewBox="0 0 600 660" role="img" aria-label="闻闻精灵：开心状态" hidden>
+          <ellipse cx="300" cy="642" rx="100" ry="11" fill="#05070E" opacity="0.4"></ellipse>
+          <use href="#wwBody"></use>
+          <use href="#wwBurst"></use>
+          <use href="#wwEar" transform="translate(216 258) rotate(-18)"></use>
+          <use href="#wwEar" transform="translate(384 258) rotate(18) scale(-1 1)"></use>
+          <use href="#wwAntenna"></use>
+          <use href="#wwDoor"></use>
+          <path d="M 250 326 Q 266 302 282 326 M 318 326 Q 334 302 350 326" fill="none" stroke="#F4F7FF" stroke-width="6" stroke-linecap="round"></path>
+          <use href="#wwBlush"></use>
+          <path d="M 284 342 Q 300 372 316 342 Z" fill="#F4F7FF" stroke="#F4F7FF" stroke-width="2" stroke-linejoin="round"></path>
+        </svg>
+        <div class="mood-switcher" role="group" aria-label="切换闻闻表情">
+          <button type="button" class="active" data-mood="listen">聆听模式</button>
+          <button type="button" data-mood="think">思考模式</button>
+          <button type="button" data-mood="happy">开心共创</button>
+        </div>
+      </div>
+
+      <div>
+        <p class="eyebrow" style="color:#F5CB7A">04 / BRAND MASCOT · 渐进式形象拆解</p>
+        <h2 id="wenwen-heading" style="color:#fff;margin-top:10px">把「闻」字拆开，<br>就是社区精灵「闻闻」。</h2>
+        <p style="font-size:14px;color:#b9c5dc;line-height:1.95;margin-top:16px">
+          大模型读的是「上下文」，而我们在真实场景里「上下相闻」。点击下方任一部件编号，逐一了解闻闻的设计寓意：
+        </p>
+
+        <div class="anatomy-tabs" role="tablist" aria-label="闻闻部位拆解">
+          <button type="button" class="anatomy-tab" role="tab" aria-selected="true" data-anat="0">01 · 精灵耳与收音灯</button>
+          <button type="button" class="anatomy-tab" role="tab" aria-selected="false" data-anat="1">02 · 门形脑袋与夜蓝屏</button>
+          <button type="button" class="anatomy-tab" role="tab" aria-selected="false" data-anat="2">03 · 字块 Tokens 与连线</button>
+          <button type="button" class="anatomy-tab" role="tab" aria-selected="false" data-anat="3">04 · 上下双轨与液态银身</button>
+        </div>
+        <div class="anatomy-detail-card pd-view-panel" id="anatomy-detail">
+          <strong id="anat-title">01 · 精灵耳 &amp; 收音灯（ELF EARS &amp; LISTENING LIGHT）</strong>
+          <p id="anat-desc">「闻」字里的那只耳。耳廓内画着三道往里走的声波，它最擅长的是倾听真实业务痛点；头顶珊瑚色小灯像录音指示灯——亮着，就代表正在认真听你说话。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a class="brand" href="/" aria-label="返回上下闻首页"><img src="/assets/shangxiawen-logo.png" width="1947" height="808" alt="上下闻"></a>
+    <p>在交流中生长，<br>让灵感上下相闻。</p>
+    <nav aria-label="页尾导航">
+      <a href="/">社区首页</a>
+      <a href="/partners.html">交付伙伴计划</a>
+      <a href="/#card-studio">AI 名片工坊</a>
+      <a href="/privacy.html">隐私说明</a>
+      <a href="#top">回到顶部 ↑</a>
+    </nav>
+    <span class="footer-sign">上下闻 · AI COMMUNITY &amp; DELIVERY SUPPLY CHAIN</span>
+  </div>
+</footer>
+
+<script>
+  // 1. FDE 6 大模块渐进式主从面板数据与交互
+  const fdeModules = [
+    {
+      code: 'MODULE 01 / 06 · 需求侧起点',
+      title: '业务诊断与需求边界',
+      desc: '走进企业业务现场，识别哪些环节适合用 AI 改造、哪些应当保留人工规则，拦截伪需求并制定清晰的验收指标。',
+      output: '业务场景诊断书、ROI 测算与验收清单',
+      exam: '真实企业案例需求拆解与防坑答辩',
+      role: 'FDE 工程师、AI 销售顾问、方案负责人（必修）',
+      nextLabel: '查看下一模块：M02 知识库治理 →'
+    },
+    {
+      code: 'MODULE 02 / 06 · 数据与知识层',
+      title: '知识库治理与 RAG 检索',
+      desc: '清洗企业非结构化文档（PDF、表格、手册），设计切片策略、元数据标签与检索增强管线，解决幻觉与答非所问。',
+      output: '高准确率企业知识库、QA 测试集（≥50 题）',
+      exam: '召回率与回答准确率盲测达标',
+      role: 'FDE 工程师、知识工程实施伙伴',
+      nextLabel: '查看下一模块：M03 业务工作流 →'
+    },
+    {
+      code: 'MODULE 03 / 06 · 流程编排层',
+      title: '业务工作流与 Agent 编排',
+      desc: '使用主流编排工具（Dify / Coze / n8n / LangGraph 等）把多步业务动作串成稳定流程，设计人工复核与异常兜底节点。',
+      output: '可稳定运行的自动化工作流与异常处理手册',
+      exam: '给定边界条件下的压力测试与容错验收',
+      role: 'FDE 工程师、独立开发者、工作流专家',
+      nextLabel: '查看下一模块：M04 应用集成 →'
+    },
+    {
+      code: 'MODULE 04 / 06 · 系统工程层',
+      title: '应用集成与环境部署',
+      desc: '将 AI 能力接入企微、飞书、钉钉或现有业务系统 API，处理私有化/云端环境配置、权限隔离与数据安全合规。',
+      output: '端到端集成系统、接口文档与安全检查表',
+      exam: '跨平台联调演示与权限安全审查',
+      role: 'FDE 工程师、全栈开发与系统集成团队',
+      nextLabel: '查看下一模块：M05 方案沟通 →'
+    },
+    {
+      code: 'MODULE 05 / 06 · 商业转化层',
+      title: 'AI 方案沟通与价值销售',
+      desc: '面向企业决策者与业务负责人，用听得懂的业务语言讲清 AI 方案价值、边界与报价逻辑，现场演示 POC 打消顾虑。',
+      output: 'POC 现场演示方案、立项建议书与报价单',
+      exam: '模拟客户老板与业务主管现场高压问答',
+      role: 'AI 销售顾问、FDE 双栖伙伴、咨询顾问',
+      nextLabel: '查看下一模块：M06 交付验收 →'
+    },
+    {
+      code: 'MODULE 06 / 06 · 闭环沉淀层',
+      title: '交付验收、赋能与复盘',
+      desc: '编写一线员工看得懂的操作 SOP，完成客户团队培训交接、二期需求挖掘，并将项目脱敏沉淀为可复用的行业模板。',
+      output: '客户交接 SOP、培训课件与脱敏交付复盘报告',
+      exam: '交付物完整性评审与客户满意度模拟验收',
+      role: '全体认证 FDE 与项目交付负责人',
+      nextLabel: '↺ 回到第 1 模块：M01 业务诊断'
+    }
+  ];
+
+  let curModIdx = 0;
+  const modTabs = document.querySelectorAll('[data-mod-idx]');
+  function selectModule(idx) {
+    curModIdx = (idx + fdeModules.length) % fdeModules.length;
+    const item = fdeModules[curModIdx];
+    modTabs.forEach((t, i) => t.setAttribute('aria-selected', String(i === curModIdx)));
+    document.getElementById('mod-code').textContent = item.code;
+    document.getElementById('mod-title').textContent = item.title;
+    document.getElementById('mod-desc').textContent = item.desc;
+    document.getElementById('mod-output').textContent = item.output;
+    document.getElementById('mod-exam').textContent = item.exam;
+    document.getElementById('mod-role').textContent = item.role;
+    document.getElementById('mod-progress').textContent = `当前查看：第 ${curModIdx + 1} / 6 模块`;
+    document.getElementById('mod-next-btn').textContent = item.nextLabel;
+  }
+  modTabs.forEach(btn => btn.addEventListener('click', () => selectModule(Number(btn.dataset.modIdx))));
+  document.getElementById('mod-next-btn').addEventListener('click', () => selectModule(curModIdx + 1));
+
+  // 2. 三档认证体系胶囊切换
+  const tierTabs = document.querySelectorAll('[data-tier-tab]');
+  const tierPanels = document.querySelectorAll('[data-tier-panel]');
+  tierTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tierTab;
+      tierTabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+      tierPanels.forEach(p => { p.hidden = p.dataset.tierPanel !== target; });
+    });
+  });
+
+  // 3. 证书核验演示逻辑
+  const demoCerts = {
+    'SXW-FDE-2026001': { name: '林*（示例持证人）', level: 'L2 · 独立交付 FDE', modules: 'M01–M06 全模块通过', status: '有效（有效期至 2027-11）', city: '深圳 / 远程' },
+    'SXW-FDE-2026002': { name: '陈*（示例持证人）', level: 'L3 · 架构与带队 FDE + AI 销售', modules: 'M01–M06 全模块优秀', status: '有效（有效期至 2027-11）', city: '深圳 / 广州' }
+  };
+  document.getElementById('verify-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const code = document.getElementById('cert-input').value.trim().toUpperCase();
+    const box = document.getElementById('verify-result');
+    box.hidden = false;
+    if (!code) {
+      box.textContent = '请输入证书编号（可尝试输入示例编号：SXW-FDE-2026001）。';
+      return;
+    }
+    const match = demoCerts[code];
+    if (match) {
+      box.innerHTML = `<strong>✓ 核验通过 · ${code}</strong><br>持证人：${match.name} ｜ 认证级别：${match.level}<br>考核模块：${match.modules} ｜ 常驻地：${match.city} ｜ 状态：${match.status}`;
+    } else {
+      box.innerHTML = `未查询到编号 <strong>${code}</strong> 的公开记录。<br>首批认证班正在筹备中；如需核实候选人实施经验，请前往<a href="/partners.html#contact" style="text-decoration:underline;margin-left:4px">联系运营人工核实 ↗</a>（也可输入示例 <code>SXW-FDE-2026001</code> 体验）。`;
+    }
+  });
+
+  // 4. 闻闻表情状态切换 & 部位渐进拆解
+  const moodBtns = document.querySelectorAll('[data-mood]');
+  const moodSvgs = {
+    listen: document.getElementById('ww-svg-listen'),
+    think: document.getElementById('ww-svg-think'),
+    happy: document.getElementById('ww-svg-happy')
+  };
+  moodBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.mood;
+      moodBtns.forEach(b => b.classList.toggle('active', b === btn));
+      Object.entries(moodSvgs).forEach(([k, svg]) => { svg.hidden = k !== target; });
+    });
+  });
+
+  const anatomyData = [
+    {
+      title: '01 · 精灵耳 & 收音灯（ELF EARS & LISTENING LIGHT）',
+      desc: '「闻」字里的那只耳。耳廓内画着三道往里走的声波，它最擅长的是倾听真实业务痛点；头顶珊瑚色小灯像录音指示灯——亮着，就代表正在认真听你说话。'
+    },
+    {
+      title: '02 · 门形脑袋 & 夜蓝屏（DOOR HEAD & SCREEN）',
+      desc: '「闻」字的外框是「门」。拱门里的深蓝屏幕与琥珀/星光大眼，是它看着你、与每位社区伙伴眼神互动的窗口。'
+    },
+    {
+      title: '03 · 字块 Tokens & 注意力连线（TOKENS & ATTENTION）',
+      desc: '飞出去的方块写着「上、下、闻、听、聊」……每一块都是一个 Token；放射状细线连着节点和声波，把分散的灵感与需求连成可见的网络。'
+    },
+    {
+      title: '04 · 双轨道 & 扭转液态银身（ORBITS & TWISTED CHROME）',
+      desc: '上轨记住已经说过的「上文」，下轨承载还没说出口的「下文」；液态金属旋尾从桌面拧着生长上来，映出天幕的暖光。'
+    }
+  ];
+  const anatTabs = document.querySelectorAll('[data-anat]');
+  anatTabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const item = anatomyData[Number(tab.dataset.anat)];
+      anatTabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+      document.getElementById('anat-title').textContent = item.title;
+      document.getElementById('anat-desc').textContent = item.desc;
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!-- pages/partners/partners.wxml (上下游视角渐进式切换 + 3大方向 + 4步流程步进器 + 沟通提纲生成与运营微信) -->
+<view class="page-container">
+
+  <!-- 1. 顶部横幅与上下相闻架构图 -->
+  <view class="partner-hero">
+    <text class="ph-eyebrow">● 上下闻 · AI 交付伙伴计划</text>
+    <text class="ph-h1">让 AI 的可能，\n走进<text class="gold-em">真实业务。</text></text>
+    <text class="ph-lead">连接需要补充实施力量的 AI 产品与咨询渠道服务商，与愿意把事情做成的 FDE 个人和交付团队。</text>
+
+    <!-- 上下相闻关系简图 -->
+    <view class="map-diagram">
+      <view class="md-node">
+        <text class="md-t">上：AI 产品与渠道方</text>
+        <text class="md-s">咨询/培训公司 · 客户交付</text>
+      </view>
+      <view class="md-center">
+        <text class="mdc-t">↕ 上下闻 ↕</text>
+        <text class="mdc-s">梳理 · 核实 · 连接</text>
+      </view>
+      <view class="md-node">
+        <text class="md-t">下：实施伙伴与 FDE</text>
+        <text class="md-s">经验 · 档期 · 驻场交付</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 渐进式身份分流：选择你所属的一侧 -->
+  <view class="section-wrap">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">01 / CHOOSE YOUR SIDE</text>
+      <text class="sec-title">选择你的合作视角</text>
+      <text class="sec-desc">点击下方胶囊切换视角，页面仅展示与你对应的协作模式与行动按钮。</text>
+    </view>
+
+    <view class="pill-bar">
+      <view class="pill-btn {{audienceSide === 'provider' ? 'active' : ''}}" bindtap="switchSide" data-side="provider">
+        <text>B / 我是 FDE 与实施伙伴</text>
+        <text class="pill-sub">下游供给侧：找适合的项目</text>
+      </view>
+      <view class="pill-btn {{audienceSide === 'company' ? 'active' : ''}}" bindtap="switchSide" data-side="company">
+        <text>A / 我是产品与渠道方</text>
+        <text class="pill-sub">上游需求侧：补充交付力量</text>
+      </view>
+    </view>
+
+    <!-- 视角 B：实施伙伴 -->
+    <view class="card-box" wx:if="{{audienceSide === 'provider'}}">
+      <text class="side-index">B / 实施伙伴与 FDE 侧（下）</text>
+      <text class="side-h3">把你的经验，用在适合的项目里。</text>
+      <text class="event-desc">欢迎认证 FDE、AI 销售顾问、独立开发者、OPC 与实施团队。无论擅长系统集成、知识库工作流还是现场实施与方案讲解，都可以带着实践经验认识我们。</text>
+      <view class="role-tags">
+        <text class="rt-chip">个人 FDE</text>
+        <text class="rt-chip">AI 销售 / 方案顾问</text>
+        <text class="rt-chip">独立开发者</text>
+        <text class="rt-chip">OPC / 实施团队</text>
+      </view>
+      <view class="btn-navy" style="margin-top:20rpx" bindtap="scrollToContact" data-role="individual">生成我的经验沟通提纲 ↓</view>
+    </view>
+
+    <!-- 视角 A：企业与渠道方 -->
+    <view class="card-box" wx:if="{{audienceSide === 'company'}}">
+      <text class="side-index">A / 产品、咨询与培训渠道方（上）</text>
+      <text class="side-h3">你的产品与客户，需要更多实施力量。</text>
+      <text class="event-desc">如果你为企业客户交付 AI 产品、咨询或培训方案，已有具体任务，需要补充现场或远程实施伙伴（支持背靠背分包、人天派驻或联合体交付），可以先和我们聊一聊。</text>
+      <view class="bullet-list">
+        <view class="bl-item">＋ 梳理任务范围、现场条件与协作方式</view>
+        <view class="bl-item">＋ 核实相关经验、产品适配和可用档期</view>
+        <view class="bl-item">＋ 双方认可后介绍，启动前明确分工与验收</view>
+      </view>
+      <view class="btn-navy" style="margin-top:20rpx" bindtap="scrollToContact" data-role="company">生成企业交付需求沟通提纲 ↓</view>
+    </view>
+  </view>
+
+  <!-- 3. 渐进式实施方向：3 大方向切换 + 对接前确认条件折叠 -->
+  <view class="section-wrap" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">02 / IMPLEMENTATION DIRECTIONS</text>
+      <text class="sec-title">从熟悉的方向开始合作</text>
+    </view>
+
+    <view class="pill-bar">
+      <view
+        wx:for="{{directions}}"
+        wx:key="code"
+        class="pill-btn {{curDir === index ? 'active' : ''}}"
+        bindtap="selectDir"
+        data-idx="{{index}}"
+      >
+        <text>{{item.tab}}</text>
+      </view>
+    </view>
+
+    <view class="card-box">
+      <text class="ms-code">{{directions[curDir].code}}</text>
+      <text class="side-h3">{{directions[curDir].title}}</text>
+      <text class="event-desc">{{directions[curDir].desc}}</text>
+
+      <view class="dir-scope">
+        <text class="ds-k">可以聊聊：</text>
+        <text class="ds-v">{{directions[curDir].scope}}</text>
+      </view>
+
+      <view class="expand-trigger" bindtap="toggleDirCheck">
+        <text>展开查看：该方向对接前需确认的条件</text>
+        <text>{{showDirCheck ? '－' : '＋'}}</text>
+      </view>
+      <view class="expand-body" wx:if="{{showDirCheck}}">
+        <text class="prog-detail">{{directions[curDir].checklist}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 4. 渐进式步骤条：4 步合作流程 -->
+  <view class="section-wrap" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">03 / HOW WE WORK (4 STEPS)</text>
+      <text class="sec-title">先把需求说清楚，再把事情做好</text>
+    </view>
+
+    <view class="proc-grid">
+      <view
+        wx:for="{{procSteps}}"
+        wx:key="num"
+        class="proc-tab {{curProc === index ? 'active' : ''}}"
+        bindtap="selectProc"
+        data-idx="{{index}}"
+      >
+        <text class="pt-num">{{item.num}}</text>
+        <text class="pt-name">{{item.short}}</text>
+      </view>
+    </view>
+
+    <view class="card-box">
+      <text class="ms-code">{{procSteps[curProc].badge}}</text>
+      <text class="side-h3">{{procSteps[curProc].title}}</text>
+      <text class="event-desc">{{procSteps[curProc].desc}}</text>
+      <view class="ms-footer">
+        <text class="ms-prog">阶段 {{curProc + 1}} / 4</text>
+        <view class="ms-next-btn" bindtap="nextProc">下一阶段 →</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. 免后端沟通提纲生成器 & 运营微信二维码 -->
+  <view class="section-wrap" id="contact-section" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">04 / LET'S CONNECT</text>
+      <text class="sec-title">两步联系上下闻运营</text>
+      <text class="sec-desc">第 1 步：选择身份并一键复制沟通提纲 → 第 2 步：长按识别运营微信二维码发送。</text>
+    </view>
+
+    <!-- 第 1 步：身份与提纲 -->
+    <view class="card-box outline-card">
+      <text class="oc-step">STEP 1 · 选择你的沟通身份</text>
+      <view class="pill-bar" style="margin-top:14rpx">
+        <view class="pill-btn {{contactRole === 'individual' ? 'active' : ''}}" bindtap="setContactRole" data-role="individual">个人伙伴 / FDE</view>
+        <view class="pill-btn {{contactRole === 'team' ? 'active' : ''}}" bindtap="setContactRole" data-role="team">实施团队 / OPC</view>
+        <view class="pill-btn {{contactRole === 'company' ? 'active' : ''}}" bindtap="setContactRole" data-role="company">产品 / 渠道商</view>
+      </view>
+
+      <view class="outline-pre">
+        <text>{{outlines[contactRole]}}</text>
+      </view>
+
+      <view class="btn-gold" bindtap="copyOutline">📋 一键复制沟通提纲</view>
+      <text class="oc-hint">提纲仅在本地生成，复制后可在微信中补充修改再发送。初次沟通请勿发送源码、密钥或证件。</text>
+    </view>
+
+    <!-- 第 2 步：运营微信二维码 -->
+    <view class="card-box qr-contact-card">
+      <text class="oc-step">STEP 2 · 添加上下闻运营 · 闻闻</text>
+      <text class="event-desc" style="text-align:center;margin-top:6rpx">先交流意向，再由运营私下核实与定向对接</text>
+      <image class="ops-qr-img" src="/assets/operations-wechat.jpg" mode="aspectFit" show-menu-by-longpress="{{true}}" bindtap="previewOpsQR" />
+      <text class="qr-tip">👆 点击放大或长按二维码直接识别添加运营微信</text>
+      <view class="btn-outline" style="margin-top:16rpx" bindtap="previewOpsQR">全屏打开二维码图片 ↗</view>
+    </view>
+  </view>
+
+  <view class="hkmu-mini-footer">
+    <text class="footer-slogan">上下闻 · AI 交付伙伴计划</text>
+    <text>© 2026 上下闻 · 先沟通，再对接 · PEOPLE → PRACTICE</text>
+  </view>
+</view>

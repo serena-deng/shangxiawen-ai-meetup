@@ -1,0 +1,10 @@
+{
+  "contact": {
+    "enabled": true,
+    "name": "上下闻运营 · 闻闻",
+    "qrUrl": "./assets/operations-wechat.jpg",
+    "wechat": "",
+    "email": "",
+    "responseNote": "先交流意向，再由运营私下对接。"
+  }
+}

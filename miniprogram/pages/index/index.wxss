@@ -1,0 +1,331 @@
+/* pages/index/index.wxss */
+.hero-swiper {
+  height: 540rpx;
+  background: radial-gradient(circle at 78% 35%, #2f5b78 0%, #153954 38%, #0a2137 78%);
+}
+.hero-slide {
+  height: 100%;
+  padding: 36rpx 32rpx 56rpx;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #ffffff;
+}
+.hero-mascot {
+  position: absolute;
+  right: -20rpx;
+  bottom: 24rpx;
+  width: 340rpx;
+  height: 380rpx;
+  opacity: 0.92;
+  transition: transform 0.4s ease;
+}
+.hero-mascot.waving {
+  transform: rotate(-10deg) scale(1.06);
+}
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 480rpx;
+}
+.hero-copy.full {
+  max-width: 100%;
+}
+.hero-eyebrow {
+  display: block;
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: var(--gold-soft);
+  margin-bottom: 14rpx;
+}
+.hero-h1 {
+  display: block;
+  font-size: 46rpx;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 18rpx;
+}
+.gold-em {
+  color: var(--gold-soft);
+}
+.hero-intro {
+  display: block;
+  font-size: 24rpx;
+  color: #bfd0de;
+  line-height: 1.65;
+  margin-bottom: 28rpx;
+}
+.hero-btns {
+  display: flex;
+  align-items: center;
+  gap: 24rpx;
+}
+.hero-link {
+  font-size: 23rpx;
+  color: #dce7f0;
+  border-bottom: 1rpx solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 4rpx;
+}
+
+/* 都会大学式悬浮快捷向导坞 */
+.quick-dock {
+  margin: -34rpx 24rpx 0;
+  position: relative;
+  z-index: 10;
+  background: var(--surface);
+  border-radius: 12rpx;
+  border: 1rpx solid var(--border);
+  border-top: 6rpx solid var(--gold);
+  box-shadow: 0 14rpx 32rpx rgba(10, 33, 55, 0.1);
+  overflow: hidden;
+}
+.dock-picker-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 22rpx;
+  background: #f8faf8;
+  border-bottom: 1rpx solid var(--border);
+}
+.dock-label {
+  font-size: 22rpx;
+  font-weight: 700;
+  color: var(--teal);
+  flex-shrink: 0;
+}
+.picker-val {
+  font-size: 23rpx;
+  color: var(--navy);
+  font-weight: 500;
+  padding: 6rpx 14rpx;
+  background: #ffffff;
+  border: 1rpx solid #cbd4d0;
+  border-radius: 6rpx;
+}
+.dock-go-btn {
+  background: var(--navy);
+  color: #ffffff;
+  font-size: 22rpx;
+  padding: 10rpx 20rpx;
+  border-radius: 6rpx;
+  flex-shrink: 0;
+}
+.dock-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+.dock-card {
+  padding: 22rpx 24rpx;
+  border-right: 1rpx solid var(--border);
+  border-bottom: 1rpx solid var(--border);
+}
+.dock-card:nth-child(2n) {
+  border-right: none;
+}
+.dock-card:nth-last-child(-n+2) {
+  border-bottom: none;
+}
+.dc-num {
+  display: block;
+  font-size: 18rpx;
+  letter-spacing: 1.5rpx;
+  color: var(--teal);
+  font-weight: 700;
+}
+.dc-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 4rpx 0 2rpx;
+}
+.dc-sub {
+  display: block;
+  font-size: 21rpx;
+  color: var(--muted);
+}
+
+/* 关键指标带 */
+.stats-strip {
+  margin: 24rpx 24rpx 0;
+  background: var(--navy);
+  border-radius: 10rpx;
+  padding: 22rpx 16rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10rpx;
+}
+.stat-cell {
+  border-left: 3rpx solid var(--gold);
+  padding-left: 12rpx;
+}
+.stat-num {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: var(--gold-soft);
+}
+.stat-label {
+  display: block;
+  font-size: 19rpx;
+  color: #b7c8d6;
+}
+
+/* 活动卡片与图集 */
+.event-cover {
+  width: 100%;
+  height: 340rpx;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
+}
+.event-meta {
+  font-size: 22rpx;
+  color: var(--muted);
+}
+.event-h3 {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 6rpx 0 10rpx;
+}
+.event-desc {
+  font-size: 25rpx;
+  color: #495d69;
+  line-height: 1.75;
+}
+.prog-item {
+  margin-bottom: 16rpx;
+}
+.prog-item:last-child {
+  margin-bottom: 0;
+}
+.prog-title {
+  display: block;
+  font-size: 25rpx;
+  font-weight: 700;
+  color: var(--navy);
+}
+.prog-detail {
+  display: block;
+  font-size: 23rpx;
+  color: var(--muted);
+  margin-top: 4rpx;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+.gallery-thumb {
+  width: 100%;
+  height: 160rpx;
+  border-radius: 6rpx;
+}
+
+/* 都会大学式日期徽章列表 */
+.date-row {
+  display: flex;
+  gap: 20rpx;
+  padding-bottom: 24rpx;
+  margin-bottom: 24rpx;
+  border-bottom: 1rpx solid #ebeeec;
+}
+.date-row:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.date-badge {
+  width: 100rpx;
+  flex-shrink: 0;
+  background: #f2f5f4;
+  border: 1rpx solid #cfd8d4;
+  border-top: 5rpx solid var(--teal);
+  border-radius: 8rpx;
+  text-align: center;
+  padding: 12rpx 6rpx;
+}
+.date-badge.upcoming {
+  border-top-color: var(--gold);
+  background: #faf6ee;
+}
+.db-month {
+  display: block;
+  font-size: 19rpx;
+  font-weight: 700;
+  color: var(--muted);
+}
+.db-day {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 2rpx;
+}
+.date-info {
+  flex: 1;
+}
+.date-tag {
+  display: inline-block;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  background: #e6f0f1;
+  color: var(--teal);
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+.date-tag.gold {
+  background: #f5ebd9;
+  color: #8a642f;
+}
+.date-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 6rpx;
+}
+.date-desc {
+  display: block;
+  font-size: 23rpx;
+  color: var(--muted);
+}
+.date-link {
+  margin-top: 10rpx;
+  font-size: 23rpx;
+  font-weight: 600;
+  color: var(--teal);
+}
+
+/* FAQ */
+.faq-item {
+  background: var(--surface);
+  border: 1rpx solid var(--border);
+  border-radius: 10rpx;
+  padding: 24rpx 26rpx;
+  margin-bottom: 16rpx;
+}
+.faq-q {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 27rpx;
+  font-weight: 600;
+  color: var(--navy);
+}
+.faq-icon {
+  color: var(--gold);
+  font-size: 32rpx;
+  font-weight: 700;
+}
+.faq-a {
+  margin-top: 16rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx dashed var(--border);
+  font-size: 24rpx;
+  color: var(--muted);
+  line-height: 1.75;
+}

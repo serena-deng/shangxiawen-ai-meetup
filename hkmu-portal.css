@@ -1,0 +1,724 @@
+/* ==========================================================================
+   HKMU (香港都会大学) 门户式排版 × 渐进式披露 (Progressive Disclosure)
+   架构特征：
+   1. Top Utility Bar (受众身份快选栏 + 证书快速核验入口 + MySXW 门户胶囊)
+   2. Sticky Main Header + Progressive Mega Menu (6大一级栏目悬停/点击展开分栏抽屉)
+   3. Full-width Hero Carousel + Floating Quick Finder Bar (底部悬浮式快速检索与工具栏)
+   4. Key Figures & Institutional Impact Strip (权威数据横幅)
+   5. Dual-Column News & Events Hub (左：焦点新闻/案例Tab；右：活动日历列表)
+   6. Academic & Competency Grid (FDE 6大学院模块 + 3档培养方案矩阵)
+   7. Comprehensive Multi-Column Institutional Footer (五栏院系门户页脚)
+   ========================================================================== */
+
+:root {
+  --hkmu-navy: #0a2137;
+  --hkmu-navy-deep: #061524;
+  --hkmu-teal: #0b5d69;
+  --hkmu-teal-light: #137887;
+  --hkmu-gold: #c9a063;
+  --hkmu-gold-soft: #e4c398;
+  --hkmu-bg: #f5f6f4;
+  --hkmu-surface: #ffffff;
+  --hkmu-border: #dce1de;
+  --hkmu-text: #182b38;
+  --hkmu-muted: #5c6f7b;
+}
+
+/* 1. Top Utility Bar (顶部受众分流工具栏) */
+.hkmu-utility-bar {
+  background: var(--hkmu-navy-deep);
+  color: #b7c6d4;
+  font-size: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  position: relative;
+  z-index: 102;
+}
+.hkmu-utility-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 4%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hkmu-audience-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.hkmu-audience-label {
+  color: var(--hkmu-gold-soft);
+  font-size: 11px;
+  letter-spacing: 1px;
+  margin-right: 8px;
+  font-weight: 600;
+}
+.hkmu-audience-links a,
+.hkmu-audience-links button {
+  border: 0;
+  background: transparent;
+  color: #c2d0dc;
+  padding: 6px 11px;
+  border-radius: 3px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.hkmu-audience-links a:hover,
+.hkmu-audience-links button:hover,
+.hkmu-audience-links [aria-current="true"] {
+  background: rgba(228, 195, 152, 0.15);
+  color: var(--hkmu-gold-soft);
+}
+.hkmu-utility-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.hkmu-quick-search-btn {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: #d6e1ea;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hkmu-quick-search-btn:hover {
+  border-color: var(--hkmu-gold-soft);
+  color: var(--hkmu-gold-soft);
+}
+.hkmu-portal-pill {
+  background: var(--hkmu-teal);
+  color: #ffffff;
+  padding: 5px 14px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.hkmu-portal-pill:hover {
+  background: var(--hkmu-teal-light);
+}
+
+/* 2. Main Institutional Header & Mega Menu (主导航栏 + 渐进式巨型下拉菜单) */
+.hkmu-header {
+  background: var(--hkmu-surface);
+  color: var(--hkmu-text);
+  border-bottom: 1px solid var(--hkmu-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(10, 33, 55, 0.05);
+}
+.hkmu-header-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 4%;
+  height: 82px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.hkmu-brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+.hkmu-brand img {
+  width: 136px;
+  height: 54px;
+  object-fit: contain;
+  background: var(--hkmu-navy);
+  padding: 6px 12px;
+  border-radius: 4px;
+}
+.hkmu-brand-text {
+  border-left: 2px solid var(--hkmu-gold);
+  padding-left: 14px;
+  line-height: 1.35;
+}
+.hkmu-brand-text strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--hkmu-navy);
+  letter-spacing: 0.5px;
+}
+.hkmu-brand-text span {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--hkmu-muted);
+  margin-top: 2px;
+}
+
+.hkmu-nav {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  gap: 4px;
+}
+.hkmu-nav-item {
+  position: static;
+  display: flex;
+  align-items: center;
+}
+.hkmu-nav-trigger {
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--hkmu-text);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+.hkmu-nav-trigger .caret {
+  font-size: 10px;
+  color: var(--hkmu-muted);
+  transition: transform 0.2s ease;
+}
+.hkmu-nav-trigger::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 0;
+  height: 3px;
+  background: var(--hkmu-teal);
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+.hkmu-nav-item:hover .hkmu-nav-trigger,
+.hkmu-nav-item.is-open .hkmu-nav-trigger,
+.hkmu-nav-trigger[aria-current="page"] {
+  color: var(--hkmu-teal);
+}
+.hkmu-nav-item:hover .hkmu-nav-trigger::after,
+.hkmu-nav-item.is-open .hkmu-nav-trigger::after,
+.hkmu-nav-trigger[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.hkmu-nav-item:hover .caret,
+.hkmu-nav-item.is-open .caret {
+  transform: rotate(180deg);
+  color: var(--hkmu-teal);
+}
+
+/* Mega Menu Drawer (巨型下拉抽屉：渐进式二级导航) */
+.hkmu-mega-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--hkmu-surface);
+  border-bottom: 3px solid var(--hkmu-teal);
+  box-shadow: 0 22px 45px rgba(10, 33, 55, 0.14);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  pointer-events: none;
+}
+.hkmu-nav-item:hover .hkmu-mega-drawer,
+.hkmu-nav-item:focus-within .hkmu-mega-drawer,
+.hkmu-nav-item.is-open .hkmu-mega-drawer {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.hkmu-mega-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 32px 4%;
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr 1fr;
+  gap: 40px;
+}
+.hkmu-mega-intro {
+  background: #f3f6f5;
+  padding: 24px;
+  border-radius: 6px;
+  border-left: 4px solid var(--hkmu-teal);
+}
+.hkmu-mega-intro span {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  color: var(--hkmu-teal);
+  font-weight: 700;
+}
+.hkmu-mega-intro h4 {
+  font-family: var(--serif);
+  font-size: 21px;
+  margin: 8px 0 10px;
+  color: var(--hkmu-navy);
+}
+.hkmu-mega-intro p {
+  font-size: 12.5px;
+  color: var(--hkmu-muted);
+  line-height: 1.75;
+  margin: 0 0 16px;
+}
+.hkmu-mega-col h5 {
+  font-size: 12px;
+  letter-spacing: 1.2px;
+  color: var(--hkmu-muted);
+  text-transform: uppercase;
+  margin: 0 0 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--hkmu-border);
+}
+.hkmu-mega-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 10px;
+}
+.hkmu-mega-links a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 4px;
+  font-size: 13.5px;
+  color: var(--hkmu-text);
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.hkmu-mega-links a small {
+  font-size: 11px;
+  color: var(--hkmu-muted);
+  font-weight: 400;
+}
+.hkmu-mega-links a:hover {
+  background: #eef4f4;
+  color: var(--hkmu-teal);
+}
+
+/* 3. Hero Banner Carousel + Floating Quick Action Bar (主横幅轮播 + 底部悬浮快捷检索栏) */
+.hkmu-hero-wrapper {
+  position: relative;
+  background: var(--hkmu-navy);
+  color: #ffffff;
+  padding-bottom: 44px;
+}
+.hkmu-hero-slide {
+  display: none;
+  animation: pd-fade-in 0.35s ease;
+}
+.hkmu-hero-slide.is-active {
+  display: block;
+}
+.hkmu-hero-controls {
+  position: relative;
+  z-index: 5;
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 6% 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.hkmu-slide-dots {
+  display: flex;
+  gap: 10px;
+}
+.hkmu-slide-dot {
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #d5e0ea;
+  padding: 7px 15px;
+  border-radius: 30px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.hkmu-slide-dot[aria-selected="true"] {
+  background: var(--hkmu-gold-soft);
+  border-color: var(--hkmu-gold-soft);
+  color: var(--hkmu-navy);
+  font-weight: 600;
+}
+
+/* 都会大学特色：横跨在 Hero 与正文交界处的悬浮快捷工具栏 (Quick Finder Dock) */
+.hkmu-quick-dock {
+  max-width: 1280px;
+  margin: -48px auto 0;
+  padding: 0 4%;
+  position: relative;
+  z-index: 15;
+}
+.hkmu-dock-grid {
+  background: var(--hkmu-surface);
+  border: 1px solid var(--hkmu-border);
+  border-top: 4px solid var(--hkmu-gold);
+  border-radius: 6px;
+  box-shadow: 0 18px 42px rgba(10, 33, 55, 0.12);
+  display: grid;
+  grid-template-columns: 1.35fr repeat(3, 1fr);
+  overflow: hidden;
+}
+.hkmu-dock-search {
+  padding: 22px 26px;
+  background: #f9faf8;
+  border-right: 1px solid var(--hkmu-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.hkmu-dock-search label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  color: var(--hkmu-teal);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+.hkmu-dock-search-row {
+  display: flex;
+  gap: 8px;
+}
+.hkmu-dock-search-row select,
+.hkmu-dock-search-row input {
+  margin: 0;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  border: 1px solid #c7d1cd;
+  border-radius: 4px;
+  background: #fff;
+}
+.hkmu-dock-search-row button {
+  padding: 9px 16px;
+  background: var(--hkmu-navy);
+  color: #fff;
+  border: 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.hkmu-dock-card {
+  padding: 22px 24px;
+  border-right: 1px solid var(--hkmu-border);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: background 0.18s ease;
+  cursor: pointer;
+  text-align: left;
+  background: var(--hkmu-surface);
+}
+.hkmu-dock-card:last-child {
+  border-right: 0;
+}
+.hkmu-dock-card:hover,
+.hkmu-dock-card[aria-current="true"] {
+  background: #f0f6f6;
+}
+.hkmu-dock-card[aria-current="true"] {
+  box-shadow: inset 0 -3px 0 var(--hkmu-teal);
+}
+.hkmu-dock-kicker {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: var(--hkmu-teal);
+  font-weight: 700;
+}
+.hkmu-dock-card strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 18px;
+  color: var(--hkmu-navy);
+  margin: 6px 0 4px;
+}
+.hkmu-dock-card small {
+  font-size: 11.5px;
+  color: var(--hkmu-muted);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 4. Institutional Impact & Key Figures Strip (都会大学式关键指标横幅) */
+.hkmu-stats-strip {
+  max-width: 1280px;
+  margin: 36px auto 0;
+  padding: 0 4%;
+}
+.hkmu-stats-inner {
+  background: var(--hkmu-navy);
+  color: #ffffff;
+  border-radius: 6px;
+  padding: 26px 36px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.hkmu-stat-item {
+  border-left: 2px solid var(--hkmu-gold);
+  padding-left: 18px;
+}
+.hkmu-stat-item strong {
+  display: block;
+  font-family: Georgia, var(--serif);
+  font-size: 30px;
+  color: var(--hkmu-gold-soft);
+  line-height: 1.2;
+}
+.hkmu-stat-item span {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 4px;
+  color: #f0f4f7;
+}
+.hkmu-stat-item small {
+  display: block;
+  font-size: 11px;
+  color: #9ab0c1;
+  margin-top: 2px;
+}
+
+/* 5. HKMU Dual-Column News & Events Hub (都会大学标志性：左焦点新闻/专题 + 右活动日历流) */
+.hkmu-hub-section {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 64px 4%;
+}
+.hkmu-section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--hkmu-navy);
+}
+.hkmu-section-header .kicker {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--hkmu-teal);
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+.hkmu-section-header h2 {
+  margin: 0;
+  font-size: clamp(26px, 2.6vw, 34px);
+  color: var(--hkmu-navy);
+}
+.hkmu-hub-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 0.95fr;
+  gap: 36px;
+  align-items: start;
+}
+
+/* 右侧：都会大学式日期徽章日历列表 (Calendar Date Badge Feed) */
+.hkmu-calendar-box {
+  background: var(--hkmu-surface);
+  border: 1px solid var(--hkmu-border);
+  border-top: 3px solid var(--hkmu-navy);
+  border-radius: 6px;
+  padding: 24px 26px;
+}
+.hkmu-calendar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.hkmu-calendar-head h3 {
+  font-family: var(--serif);
+  font-size: 20px;
+  margin: 0;
+  color: var(--hkmu-navy);
+}
+.hkmu-date-list {
+  display: grid;
+  gap: 16px;
+}
+.hkmu-date-item {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #ebeeec;
+}
+.hkmu-date-item:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.hkmu-date-badge {
+  background: #f2f5f4;
+  border: 1px solid #d0dad6;
+  border-top: 3px solid var(--hkmu-teal);
+  border-radius: 4px;
+  text-align: center;
+  padding: 7px 4px;
+}
+.hkmu-date-badge.upcoming {
+  border-top-color: var(--hkmu-gold);
+  background: #faf6ee;
+}
+.hkmu-date-badge .month {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--hkmu-muted);
+  letter-spacing: 0.8px;
+}
+.hkmu-date-badge .day {
+  display: block;
+  font: 700 20px Georgia, serif;
+  color: var(--hkmu-navy);
+  line-height: 1.25;
+}
+.hkmu-date-info .tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  background: #e7f0f1;
+  color: var(--hkmu-teal);
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+.hkmu-date-info .tag.gold {
+  background: #f5ebd9;
+  color: #8a642f;
+}
+.hkmu-date-info h4 {
+  margin: 0 0 4px;
+  font-size: 15px;
+  color: var(--hkmu-navy);
+  line-height: 1.45;
+}
+.hkmu-date-info p {
+  margin: 0;
+  font-size: 12px;
+  color: var(--hkmu-muted);
+  line-height: 1.65;
+}
+.hkmu-date-action {
+  margin-top: 7px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: var(--hkmu-teal);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.hkmu-date-action:hover {
+  text-decoration: underline;
+}
+
+/* 6. Multi-Column Institutional Footer (都会大学式五栏院系门户页脚) */
+.hkmu-footer {
+  background: var(--hkmu-navy-deep);
+  color: #b7c6d4;
+  border-top: 4px solid var(--hkmu-gold);
+  padding: 56px 0 28px;
+  font-size: 12.5px;
+}
+.hkmu-footer-inner {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 0 4%;
+}
+.hkmu-footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: 36px;
+  padding-bottom: 42px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.hkmu-footer-brand img {
+  width: 132px;
+  height: 52px;
+  object-fit: contain;
+  margin-bottom: 14px;
+}
+.hkmu-footer-brand p {
+  font-size: 12px;
+  color: #96aab9;
+  line-height: 1.85;
+  margin: 0 0 14px;
+}
+.hkmu-footer-col h4 {
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(228, 195, 152, 0.25);
+}
+.hkmu-footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 9px;
+}
+.hkmu-footer-col a {
+  color: #a4b7c6;
+  font-size: 12px;
+  transition: color 0.15s ease;
+}
+.hkmu-footer-col a:hover {
+  color: var(--hkmu-gold-soft);
+}
+.hkmu-footer-bottom {
+  padding-top: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 11px;
+  color: #7d93a5;
+}
+.hkmu-footer-bottom-links {
+  display: flex;
+  gap: 20px;
+}
+
+@media (max-width: 1024px) {
+  .hkmu-mega-inner { grid-template-columns: 1fr 1fr; }
+  .hkmu-dock-grid { grid-template-columns: 1fr 1fr; }
+  .hkmu-stats-inner { grid-template-columns: 1fr 1fr; }
+  .hkmu-hub-grid { grid-template-columns: 1fr; }
+  .hkmu-footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 680px) {
+  .hkmu-utility-inner { justify-content: center; padding: 8px 4%; }
+  .hkmu-header-inner { height: auto; padding: 14px 4%; flex-wrap: wrap; }
+  .hkmu-nav { width: 100%; overflow-x: auto; padding-bottom: 6px; }
+  .hkmu-nav-trigger { font-size: 13px; padding: 8px 10px; white-space: nowrap; }
+  .hkmu-mega-drawer { display: none; }
+  .hkmu-dock-grid, .hkmu-stats-inner, .hkmu-footer-grid { grid-template-columns: 1fr; }
+  .hkmu-quick-dock { margin-top: 0; }
+}

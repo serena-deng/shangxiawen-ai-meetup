@@ -1,0 +1,42 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/fde/fde",
+    "pages/card/card",
+    "pages/partners/partners"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#0a2137",
+    "navigationBarTitleText": "上下闻 · AI 交付与社区门户",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f6f4"
+  },
+  "tabBar": {
+    "color": "#6c7f8c",
+    "selectedColor": "#0a2137",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "门户首页"
+      },
+      {
+        "pagePath": "pages/fde/fde",
+        "text": "FDE 学院"
+      },
+      {
+        "pagePath": "pages/card/card",
+        "text": "AI 名片"
+      },
+      {
+        "pagePath": "pages/partners/partners",
+        "text": "交付合作"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

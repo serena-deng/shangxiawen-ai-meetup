@@ -1,0 +1,190 @@
+<!-- pages/card/card.wxml (4 步渐进式 AI 名片向导 + 实时预览 + 原生 Canvas 保存相册) -->
+<view class="page-container">
+
+  <!-- 1. 顶部实时横版名片预览舞台 (Sticky Preview) -->
+  <view class="preview-header">
+    <view class="ph-top">
+      <text class="ph-kicker">上下闻社区版 · 横版 AI 名片实时预览</text>
+      <text class="ph-tag">{{typeLabels[cardType]}} · {{themeLabels[theme]}}</text>
+    </view>
+
+    <!-- 实时渲染的横版几何名片 -->
+    <view class="ai-landscape-card theme-{{theme}}">
+      <view class="geo-shape-1"></view>
+      <view class="geo-shape-2"></view>
+
+      <!-- 左上品牌区 -->
+      <view class="card-left-col">
+        <image class="card-logo" src="/assets/shangxiawen-logo.png" mode="aspectFit" />
+        <text class="card-slogan">在交流中生长，让灵感上下相闻。</text>
+
+        <!-- 左下双二维码区 -->
+        <view class="card-qr-row">
+          <view class="qr-box" wx:if="{{personalQR}}">
+            <image class="qr-img" src="{{personalQR}}" mode="aspectFit" />
+            <text class="qr-cap">{{personalQRLabel || '扫码联系我'}}</text>
+          </view>
+          <view class="qr-box">
+            <image class="qr-img" src="/assets/community-qr.png" mode="aspectFit" />
+            <text class="qr-cap">上下闻 · 社区</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 右侧个人信息区 (右对齐排版，与网页版 SVG 完全一致) -->
+      <view class="card-right-col">
+        <text class="cr-name">{{nickname || '好奇的 AI 探索者'}}</text>
+        <view class="cr-line"></view>
+        <text class="cr-role" wx:if="{{role || industry}}">{{role || 'AI 实践者'}}{{industry ? ' · ' + industry : ''}}</text>
+        <text class="cr-bio">{{bio || '想把好玩的 AI，带进真实的工作与生活。'}}</text>
+
+        <view class="cr-tags">
+          <text class="cr-tag" wx:for="{{selectedInterests.length ? selectedInterests : ['图像生成', '工作流自动化', '行业应用']}}" wx:key="*this">#{{item}}</text>
+        </view>
+
+        <text class="cr-extra" wx:if="{{offer}}">可以分享 / {{offer}}</text>
+        <text class="cr-extra" wx:if="{{seek}}">希望连接 / {{seek}}</text>
+        <text class="cr-contact" wx:if="{{contact && showContact}}">联系我 / {{contact}}</text>
+      </view>
+    </view>
+
+    <!-- 渐进式展开：配色与用途定制抽屉 -->
+    <view class="style-drawer-bar" bindtap="toggleStyleDrawer">
+      <text>🎨 外观配色与名片用途调节</text>
+      <text>{{showStyleDrawer ? '－ 收起' : '＋ 展开定制'}}</text>
+    </view>
+    <view class="style-drawer-body" wx:if="{{showStyleDrawer}}">
+      <view class="sd-row">
+        <text class="sd-label">几何配色：</text>
+        <view class="swatches">
+          <view class="swatch navy {{theme === 'navy' ? 'active' : ''}}" bindtap="setTheme" data-theme="navy">海湾蓝</view>
+          <view class="swatch paper {{theme === 'paper' ? 'active' : ''}}" bindtap="setTheme" data-theme="paper">暖纸棕</view>
+          <view class="swatch forest {{theme === 'forest' ? 'active' : ''}}" bindtap="setTheme" data-theme="forest">森林绿</view>
+        </view>
+      </view>
+      <view class="sd-row" style="margin-top:14rpx">
+        <text class="sd-label">名片用途：</text>
+        <view class="swatches">
+          <view class="swatch-btn {{cardType === 'explore' ? 'active' : ''}}" bindtap="setCardType" data-type="explore">兴趣探索</view>
+          <view class="swatch-btn {{cardType === 'project' ? 'active' : ''}}" bindtap="setCardType" data-type="project">项目展示</view>
+          <view class="swatch-btn {{cardType === 'connect' ? 'active' : ''}}" bindtap="setCardType" data-type="connect">寻找合作</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 2. 4 步渐进式表单向导 (Step-by-Step Wizard) -->
+  <view class="section-wrap" style="padding-top:24rpx">
+    <view class="wizard-bar">
+      <view
+        wx:for="{{steps}}"
+        wx:key="num"
+        class="wz-tab {{curStep === index ? 'active' : ''}} {{index < curStep ? 'done' : ''}}"
+        bindtap="goStep"
+        data-step="{{index}}"
+      >
+        <text class="wz-num">{{index + 1}}</text>
+        <text class="wz-name">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 步骤 1：基础身份 -->
+    <view class="card-box" wx:if="{{curStep === 0}}">
+      <text class="step-legend">STEP 01 · 让大家认识你</text>
+      <view class="field-item">
+        <text class="field-label">名片上的称呼 <text class="req">*</text></text>
+        <input class="field-input" maxlength="20" placeholder="名字或昵称，建议 10 字以内" value="{{nickname}}" bindinput="onInput" data-field="nickname" />
+      </view>
+      <view class="field-item">
+        <text class="field-label">角色 / 身份（选填）</text>
+        <input class="field-input" maxlength="30" placeholder="例如：FDE 工程师、品牌设计师、产品经理" value="{{role}}" bindinput="onInput" data-field="role" />
+      </view>
+      <view class="field-item">
+        <text class="field-label">所在行业（选填）</text>
+        <picker mode="selector" range="{{industries}}" bindchange="onIndustryChange">
+          <view class="field-input picker-line">{{industry || '点击选择所在行业 ▾'}}</view>
+        </picker>
+      </view>
+      <view class="field-item" style="margin-bottom:0">
+        <text class="field-label">一句话介绍（选填）</text>
+        <textarea class="field-textarea" maxlength="100" placeholder="你正在用 AI 探索什么？建议 40 字以内" value="{{bio}}" bindinput="onInput" data-field="bio" />
+      </view>
+    </view>
+
+    <!-- 步骤 2：AI 兴趣标签 -->
+    <view class="card-box" wx:if="{{curStep === 1}}">
+      <text class="step-legend">STEP 02 · 选择 AI 兴趣标签（最多 5 项）*</text>
+      <view class="tag-grid">
+        <view
+          wx:for="{{interestOptions}}"
+          wx:key="name"
+          class="interest-chip {{item.checked ? 'checked' : ''}}"
+          bindtap="toggleInterest"
+          data-idx="{{index}}"
+        >
+          # {{item.name}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 步骤 3：供需连接 -->
+    <view class="card-box" wx:if="{{curStep === 2}}">
+      <text class="step-legend">STEP 03 · 我们可以一起做什么（选填）</text>
+      <view class="field-item">
+        <text class="field-label">我可以分享 / 正在做的事</text>
+        <textarea class="field-textarea" maxlength="120" placeholder="例如：企业 RAG 知识库调优、正在做的 AIGC 短剧" value="{{offer}}" bindinput="onInput" data-field="offer" />
+      </view>
+      <view class="field-item">
+        <text class="field-label">我希望连接</text>
+        <textarea class="field-textarea" maxlength="120" placeholder="例如：有 B 端客户资源的咨询伙伴、自动化工作流同好" value="{{seek}}" bindinput="onInput" data-field="seek" />
+      </view>
+      <view class="field-item" style="margin-bottom:0">
+        <view style="display:flex;justify-content:space-between;align-items:center">
+          <text class="field-label">文字联系方式（微信/邮箱）</text>
+          <switch checked="{{showContact}}" bindchange="toggleShowContact" color="#0b5d69" />
+        </view>
+        <input class="field-input" maxlength="60" placeholder="开启右上角开关后显示在名片底部" value="{{contact}}" bindinput="onInput" data-field="contact" />
+      </view>
+    </view>
+
+    <!-- 步骤 4：个人二维码 -->
+    <view class="card-box" wx:if="{{curStep === 3}}">
+      <text class="step-legend">STEP 04 · 放上你的个人二维码（选填）</text>
+      <text class="event-desc" style="margin-bottom:18rpx">可从手机相册选择微信二维码或个人主页码，仅在手机本地合成，不上传服务器。</text>
+
+      <view class="qr-upload-btn" bindtap="choosePersonalQR">
+        <text class="qu-plus">＋</text>
+        <text class="qu-text">{{personalQR ? '更换个人二维码图片' : '从手机相册选择二维码图片'}}</text>
+      </view>
+
+      <view class="qr-selected-bar" wx:if="{{personalQR}}">
+        <image class="qs-thumb" src="{{personalQR}}" mode="aspectFit" />
+        <view class="qs-info">
+          <text class="qs-ok">✓ 个人二维码已放入名片</text>
+          <view class="qs-del" bindtap="removePersonalQR">移除二维码</view>
+        </view>
+      </view>
+
+      <view class="field-item" style="margin-top:18rpx;margin-bottom:0">
+        <text class="field-label">二维码下方提示文字</text>
+        <input class="field-input" maxlength="12" value="{{personalQRLabel}}" bindinput="onInput" data-field="personalQRLabel" />
+      </view>
+    </view>
+
+    <!-- 向导步进按钮条 -->
+    <view class="wizard-nav-row">
+      <view class="btn-outline" wx:if="{{curStep > 0}}" bindtap="prevStep">← 上一步</view>
+      <view class="btn-navy" style="flex:1" wx:if="{{curStep < 3}}" bindtap="nextStep">下一步：{{steps[curStep + 1]}} →</view>
+    </view>
+
+    <!-- 导出与复制主行动区 -->
+    <view class="export-actions">
+      <button class="btn-gold" style="flex:1.2" bindtap="exportCardToAlbum">💾 生成高清名片存相册</button>
+      <button class="btn-navy" style="flex:1" bindtap="copyCardIntro">⧉ 复制文字介绍</button>
+    </view>
+    <text class="privacy-note">名片完全在你的手机本地通过 Canvas 2D 合成，不会上传到任何服务器。</text>
+  </view>
+
+  <!-- 隐藏的离屏高清 Canvas (1260 x 720 比例) -->
+  <canvas type="2d" id="cardCanvas" class="offscreen-canvas"></canvas>
+</view>

@@ -1,0 +1,181 @@
+<!-- pages/fde/fde.wxml (FDE 能力学院 + 主从渐进式浏览 + 证书编号核验 + 闻闻 IP 设定) -->
+<view class="page-container">
+
+  <!-- 1. 顶部学院横幅 -->
+  <view class="fde-hero">
+    <text class="fde-badge">● STANDARD v1.0 · 2026-11 公开标准</text>
+    <text class="fde-h1">AI 时代最缺的，\n是<text class="gold-em">能把方案交付的人。</text></text>
+    <text class="fde-lead">上下闻 FDE（Forward Deployed Engineer，前线部署工程师）能力模型与三级认证体系：连接上游企业需求，标准化培养并认证下游 AI 交付人才。</text>
+
+    <!-- 渐进式展开：与传统岗位对比 -->
+    <view class="hero-compare-trigger" bindtap="toggleCompare">
+      <text>展开对比：FDE 与传统算法 / 售前 / 外包的区别</text>
+      <text>{{showCompare ? '－' : '＋'}}</text>
+    </view>
+    <view class="hero-compare-box" wx:if="{{showCompare}}">
+      <view class="cmp-row"><text class="cmp-k">对比传统算法：</text><text>不局限于底层训练，专注业务场景应用、RAG 调优与最后十米交付。</text></view>
+      <view class="cmp-row"><text class="cmp-k">对比传统售前：</text><text>不止于 PPT 方案演示，能现场搭建可验证的 POC 原型与工作流。</text></view>
+      <view class="cmp-row"><text class="cmp-k">对比普通外包：</text><text>懂 AI 边界与 Agent 范式，兼顾效果评估、异常接管与客户团队赋能。</text></view>
+    </view>
+  </view>
+
+  <!-- 2. 渐进式主从浏览：FDE 能力模型 6 大模块 -->
+  <view class="section-wrap">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">01 / FDE COMPETENCY MODEL (6 MODULES)</text>
+      <text class="sec-title">FDE 能力模型六大必修模块</text>
+      <text class="sec-desc">点选任一模块编号，下方渐进披露该模块的标准交付物与实战考核方式。</text>
+    </view>
+
+    <!-- 6 模块选择器 (2x3 矩阵导航) -->
+    <view class="mod-grid">
+      <view
+        wx:for="{{modules}}"
+        wx:key="code"
+        class="mod-chip {{curMod === index ? 'active' : ''}}"
+        bindtap="selectMod"
+        data-idx="{{index}}"
+      >
+        <text class="mc-num">{{item.short}}</text>
+        <text class="mc-name">{{item.name}}</text>
+      </view>
+    </view>
+
+    <!-- 当前选中模块的详情舞台 -->
+    <view class="card-box mod-stage">
+      <text class="ms-code">{{modules[curMod].code}}</text>
+      <text class="ms-title">{{modules[curMod].name}}</text>
+      <text class="ms-desc">{{modules[curMod].desc}}</text>
+
+      <view class="ms-meta-box">
+        <view class="ms-row">
+          <text class="ms-label">📦 标准交付产出：</text>
+          <text class="ms-val">{{modules[curMod].output}}</text>
+        </view>
+        <view class="ms-row">
+          <text class="ms-label">🎯 实战考核方式：</text>
+          <text class="ms-val">{{modules[curMod].exam}}</text>
+        </view>
+        <view class="ms-row">
+          <text class="ms-label">👥 重点适用角色：</text>
+          <text class="ms-val">{{modules[curMod].role}}</text>
+        </view>
+      </view>
+
+      <view class="ms-footer">
+        <text class="ms-prog">模块 {{curMod + 1}} / 6</text>
+        <view class="ms-next-btn" bindtap="nextMod">下一模块 →</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 渐进式档位切换：三档培养与认证体系 -->
+  <view class="section-wrap" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">02 / TRAINING & CERTIFICATION TIERS</text>
+      <text class="sec-title">三档培养与认证：卖的是接单资格</text>
+      <text class="sec-desc">遵循「先锁需求，再配供给」铁律，按意向项目量控制每期认证班名额。</text>
+    </view>
+
+    <view class="pill-bar">
+      <view class="pill-btn {{curTier === 1 ? 'active' : ''}}" bindtap="selectTier" data-idx="1">
+        <text>★ 认证 FDE</text>
+        <text class="pill-sub">¥1,999 主力推荐</text>
+      </view>
+      <view class="pill-btn {{curTier === 2 ? 'active' : ''}}" bindtap="selectTier" data-idx="2">
+        <text>FDE+销售双栖</text>
+        <text class="pill-sub">¥2,999 可带队分销</text>
+      </view>
+      <view class="pill-btn {{curTier === 0 ? 'active' : ''}}" bindtap="selectTier" data-idx="0">
+        <text>AI 交付启航营</text>
+        <text class="pill-sub">¥999 入门实战</text>
+      </view>
+    </view>
+
+    <view class="card-box tier-stage {{tiers[curTier].featured ? 'featured' : ''}}">
+      <view class="ts-top">
+        <text class="ts-badge">{{tiers[curTier].badge}}</text>
+        <text class="ts-price">{{tiers[curTier].price}}</text>
+      </view>
+      <text class="ts-title">{{tiers[curTier].title}}</text>
+      <text class="ts-desc">{{tiers[curTier].desc}}</text>
+
+      <view class="ts-list">
+        <view class="ts-item" wx:for="{{tiers[curTier].points}}" wx:key="*this">
+          <text class="ts-check">✓</text>
+          <text>{{item}}</text>
+        </view>
+      </view>
+
+      <view class="btn-gold" bindtap="goApply">咨询本档位排期与考核要求 ↗</view>
+    </view>
+  </view>
+
+  <!-- 4. 在线证书编号核验系统 -->
+  <view class="section-wrap" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">03 / CERTIFICATE VERIFICATION</text>
+      <text class="sec-title">持证人才证书编号核验</text>
+    </view>
+
+    <view class="card-box">
+      <text class="event-desc">输入「上下闻 FDE / AI 销售认证编号」核验持证人状态、级别（L1–L3）及有效期限。</text>
+      <view class="verify-row">
+        <input class="verify-input" placeholder="输入编号，如 SXW-FDE-2026001" value="{{certCode}}" bindinput="onCertInput" />
+        <view class="btn-navy" bindtap="verifyCert">核验</view>
+      </view>
+      <view class="sample-chips">
+        <text class="sample-label">点击填入示例：</text>
+        <text class="sample-chip" bindtap="fillSampleCert" data-code="SXW-FDE-2026001">SXW-FDE-2026001</text>
+        <text class="sample-chip" bindtap="fillSampleCert" data-code="SXW-FDE-2026002">SXW-FDE-2026002</text>
+      </view>
+
+      <view class="verify-res {{verifyPass ? 'pass' : 'warn'}}" wx:if="{{verifyMsg}}">
+        <text>{{verifyMsg}}</text>
+      </view>
+
+      <view class="expand-trigger" bindtap="toggleCompliance">
+        <text>关于认证性质与招生合规说明</text>
+        <text>{{showCompliance ? '－' : '＋'}}</text>
+      </view>
+      <view class="expand-body" wx:if="{{showCompliance}}">
+        <text class="prog-detail">1.「上下闻 FDE 认证」系上下闻平台基于企业实战需求制定的自有能力评估标准，非国家职业资格认证。\n2. 首批认证班待 B 端渠道合作签约达标后定向开启招生，退费保障条款以正式协议为准。</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 5. 品牌精灵「闻闻」设定与渐进式部位拆解 -->
+  <view class="section-wrap" style="padding-top:10rpx">
+    <view class="hkmu-sec-head">
+      <text class="sec-kicker">04 / BRAND MASCOT · 形象拆解</text>
+      <text class="sec-title">把「闻」字拆开，就是精灵「闻闻」</text>
+      <text class="sec-desc">大模型读的是「上下文」，我们在线下「上下相闻」（门 + 耳 = 闻）。</text>
+    </view>
+
+    <view class="card-box wenwen-box">
+      <image class="wenwen-img" src="/assets/wenwen-design.png" mode="aspectFit" bindtap="previewWenwen" />
+      <text class="wenwen-hint">点击上方设定图可全屏放大查看细节</text>
+
+      <view class="anat-tabs">
+        <view
+          wx:for="{{anatomy}}"
+          wx:key="title"
+          class="anat-tab {{curAnat === index ? 'active' : ''}}"
+          bindtap="selectAnat"
+          data-idx="{{index}}"
+        >
+          {{item.short}}
+        </view>
+      </view>
+      <view class="anat-detail">
+        <text class="ad-title">{{anatomy[curAnat].title}}</text>
+        <text class="ad-desc">{{anatomy[curAnat].desc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="hkmu-mini-footer">
+    <text class="footer-slogan">上下闻 FDE 能力学院 · 实战交付标准</text>
+    <text>© 2026 上下闻 · AI 交付人才供应链</text>
+  </view>
+</view>

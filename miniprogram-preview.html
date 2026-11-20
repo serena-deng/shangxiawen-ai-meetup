@@ -1,0 +1,1164 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <title>上下闻微信小程序 · 交互模拟器预览</title>
+  <link rel="icon" href="./assets/shangxiawen-logo.png" type="image/png">
+  <style>
+    :root {
+      --navy: #0a2137;
+      --navy-deep: #061524;
+      --teal: #0b5d69;
+      --gold: #c9a063;
+      --gold-soft: #e4c398;
+      --bg: #f5f6f4;
+      --surface: #ffffff;
+      --border: #dce1de;
+      --text: #182b38;
+      --muted: #5c6f7b;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at 20% 20%, #163854, #071726 75%);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+    }
+
+    /* 顶部模拟器说明栏 */
+    .sim-top-bar {
+      width: min(1120px, 100%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      color: #d5e2ed;
+    }
+    .sim-top-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sim-badge {
+      background: #07c160;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+    .sim-top-left strong {
+      font-size: 15px;
+      color: #fff;
+    }
+    .sim-top-links {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .sim-top-links a, .sim-top-links button {
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .sim-top-links a:hover, .sim-top-links button:hover {
+      border-color: var(--gold-soft);
+      color: var(--gold-soft);
+    }
+
+    /* 主体布局：左侧手机模拟器 + 右侧快捷跳页与操作指引 */
+    .sim-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      max-width: 1120px;
+      width: 100%;
+    }
+
+    /* iPhone 外壳 */
+    .phone-shell {
+      width: 392px;
+      height: 812px;
+      background: #111822;
+      border-radius: 48px;
+      padding: 13px;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.55), 0 0 0 2px #2c3a4b;
+      position: relative;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-screen {
+      flex: 1;
+      background: var(--bg);
+      border-radius: 36px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* 微信小程序顶部状态栏 + 胶囊导航栏 */
+    .wx-status-bar {
+      background: var(--navy);
+      color: #fff;
+      height: 36px;
+      padding: 8px 22px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+    .wx-nav-bar {
+      background: var(--navy);
+      color: #fff;
+      height: 46px;
+      padding: 0 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .wx-nav-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .wx-capsule {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px;
+      height: 28px;
+      padding: 0 10px;
+      gap: 8px;
+      font-size: 12px;
+    }
+    .wx-capsule i {
+      font-style: normal;
+      opacity: 0.35;
+    }
+
+    /* 小程序页面滚动容器 */
+    .wx-page-scroll {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    .wx-page-scroll::-webkit-scrollbar { width: 4px; }
+    .wx-page-scroll::-webkit-scrollbar-thumb { background: #c2ccc7; border-radius: 4px; }
+
+    /* 微信小程序底部 4 TabBar */
+    .wx-tab-bar {
+      height: 60px;
+      background: #ffffff;
+      border-top: 1px solid #e0e5e2;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      flex-shrink: 0;
+      padding-bottom: 4px;
+    }
+    .wx-tab-item {
+      border: 0;
+      background: transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      color: #6c7f8c;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .wx-tab-item .icon {
+      font-size: 18px;
+      line-height: 1.1;
+    }
+    .wx-tab-item.active {
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    /* 小程序 Toast 浮层 */
+    .wx-toast {
+      position: absolute;
+      top: 46%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(17, 24, 34, 0.9);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 13px;
+      z-index: 99;
+      pointer-events: none;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      max-width: 82%;
+    }
+
+    /* 小程序内部通用组件样式 (1:1 对应 app.wxss) */
+    .utility-bar {
+      background: var(--navy-deep);
+      color: #b7c6d4;
+      padding: 7px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow-x: auto;
+      white-space: nowrap;
+      font-size: 11px;
+    }
+    .utility-label { color: var(--gold-soft); font-weight: 700; }
+    .role-chip {
+      border: 0;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      color: #c9d6e2;
+      font-size: 11px;
+      cursor: pointer;
+    }
+    .role-chip.active {
+      background: rgba(228,195,152,0.24);
+      color: var(--gold-soft);
+      font-weight: 600;
+    }
+    .brand-header {
+      background: #fff;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+    .brand-left { display: flex; align-items: center; gap: 9px; }
+    .brand-logo { width: 74px; height: 30px; background: var(--navy); padding: 3px 6px; border-radius: 4px; object-fit: contain; }
+    .brand-title-wrap { border-left: 2px solid var(--gold); padding-left: 8px; }
+    .brand-title { display: block; font-size: 13px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+    .brand-sub { display: block; font-size: 9px; letter-spacing: 1px; color: var(--muted); }
+    .portal-pill {
+      border: 0;
+      background: var(--teal);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    /* 首页 Hero 轮播 */
+    .hero-box {
+      background: radial-gradient(circle at 78% 35%, #2f5b78 0%, #153954 38%, #0a2137 78%);
+      color: #fff;
+      padding: 18px 16px 32px;
+      position: relative;
+      min-height: 235px;
+    }
+    .hero-mascot {
+      position: absolute;
+      right: -8px;
+      bottom: 14px;
+      width: 146px;
+      height: 165px;
+      object-fit: contain;
+      cursor: pointer;
+      transition: transform 0.35s ease;
+    }
+    .hero-mascot.waving { transform: rotate(-10deg) scale(1.08); }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 1px; color: var(--gold-soft); display: block; margin-bottom: 6px; }
+    .hero-h1 { font-size: 22px; font-weight: 700; line-height: 1.3; margin: 0 0 8px; }
+    .gold-em { color: var(--gold-soft); font-style: normal; }
+    .hero-intro { font-size: 12px; color: #bfd0de; line-height: 1.6; margin: 0 0 14px; max-width: 230px; }
+    .hero-dots { display: flex; gap: 6px; margin-top: 12px; }
+    .hero-dot {
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(255,255,255,0.1);
+      color: #d6e2ec;
+      font-size: 10px;
+      padding: 3px 9px;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .hero-dot.active { background: var(--gold-soft); color: var(--navy); border-color: var(--gold-soft); font-weight: 700; }
+
+    /* 悬浮 Quick Dock */
+    .quick-dock {
+      margin: -18px 12px 0;
+      position: relative;
+      z-index: 5;
+      background: #fff;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--gold);
+      box-shadow: 0 8px 18px rgba(10,33,55,0.08);
+      overflow: hidden;
+    }
+    .dock-cards { display: grid; grid-template-columns: 1fr 1fr; }
+    .dock-card {
+      border: 0;
+      background: #fff;
+      text-align: left;
+      padding: 11px 12px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+    .dock-card:hover { background: #f2f7f7; }
+    .dc-num { display: block; font-size: 9px; color: var(--teal); font-weight: 700; letter-spacing: 0.8px; }
+    .dc-title { display: block; font-size: 14px; font-weight: 700; color: var(--navy); margin: 2px 0; }
+    .dc-sub { display: block; font-size: 10.5px; color: var(--muted); }
+
+    .stats-strip {
+      margin: 12px 12px 0;
+      background: var(--navy);
+      border-radius: 6px;
+      padding: 11px 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+    .stat-cell { border-left: 2px solid var(--gold); padding-left: 6px; }
+    .stat-num { display: block; font-size: 13px; font-weight: 700; color: var(--gold-soft); }
+    .stat-label { display: block; font-size: 9.5px; color: #b7c8d6; }
+
+    .section-wrap { padding: 18px 14px; }
+    .hkmu-sec-head { border-bottom: 2px solid var(--navy); padding-bottom: 8px; margin-bottom: 12px; }
+    .sec-kicker { display: block; font-size: 10px; letter-spacing: 1.5px; color: var(--teal); font-weight: 700; }
+    .sec-title { display: block; font-size: 18px; font-weight: 700; color: var(--navy); margin-top: 2px; }
+    .sec-desc { display: block; font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+
+    .pill-bar {
+      display: flex;
+      gap: 6px;
+      background: #e6ebe6;
+      padding: 4px;
+      border-radius: 7px;
+      margin-bottom: 12px;
+    }
+    .pill-btn {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      padding: 8px 6px;
+      border-radius: 5px;
+      font-size: 11.5px;
+      font-weight: 500;
+      color: #4a6058;
+      cursor: pointer;
+      text-align: center;
+    }
+    .pill-btn.active {
+      background: var(--navy);
+      color: #fff;
+      font-weight: 600;
+    }
+    .pill-sub { display: block; font-size: 9.5px; opacity: 0.8; margin-top: 1px; }
+    .pill-btn.active .pill-sub { color: var(--gold-soft); opacity: 1; }
+
+    .card-box {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .event-cover { width: 100%; height: 165px; object-fit: cover; border-radius: 6px; margin-bottom: 8px; }
+    .event-meta { font-size: 11px; color: var(--muted); }
+    .event-h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin: 4px 0 6px; }
+    .event-desc { font-size: 12.5px; color: #495d69; line-height: 1.65; }
+
+    .expand-trigger {
+      width: 100%;
+      margin-top: 10px;
+      padding: 9px 12px;
+      background: #f2f5f3;
+      border: 1px solid #ced8d2;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--navy);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .expand-body {
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: #f9faf8;
+      border-left: 3px solid var(--gold);
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .prog-item { margin-bottom: 8px; }
+    .prog-item:last-child { margin-bottom: 0; }
+    .prog-title { display: block; font-weight: 700; color: var(--navy); }
+    .prog-detail { display: block; color: var(--muted); font-size: 11.5px; margin-top: 2px; }
+
+    .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+    .gallery-thumb { width: 100%; height: 76px; object-fit: cover; border-radius: 4px; }
+
+    /* 日历列表 */
+    .date-row { display: flex; gap: 10px; padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid #ebeeec; }
+    .date-row:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+    .date-badge {
+      width: 50px;
+      flex-shrink: 0;
+      background: #f2f5f4;
+      border: 1px solid #cfd8d4;
+      border-top: 3px solid var(--teal);
+      border-radius: 5px;
+      text-align: center;
+      padding: 5px 2px;
+    }
+    .date-badge.upcoming { border-top-color: var(--gold); background: #faf6ee; }
+    .db-month { display: block; font-size: 9.5px; font-weight: 700; color: var(--muted); }
+    .db-day { display: block; font-size: 15px; font-weight: 700; color: var(--navy); }
+    .date-tag { display: inline-block; font-size: 10px; padding: 2px 6px; border-radius: 3px; background: #e6f0f1; color: var(--teal); font-weight: 600; margin-bottom: 3px; }
+    .date-tag.gold { background: #f5ebd9; color: #8a642f; }
+    .date-title { display: block; font-size: 13.5px; font-weight: 700; color: var(--navy); }
+    .date-desc { display: block; font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+
+    /* FDE 6模块网格 */
+    .mod-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 12px; }
+    .mod-chip {
+      border: 1px solid var(--border);
+      background: #fff;
+      border-radius: 6px;
+      padding: 9px 6px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .mod-chip.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+    .mc-num { display: block; font-size: 10px; font-weight: 700; color: var(--gold); }
+    .mod-chip.active .mc-num { color: var(--gold-soft); }
+    .mc-name { display: block; font-size: 11.5px; font-weight: 600; margin-top: 2px; }
+
+    .btn-gold {
+      border: 0;
+      background: var(--gold-soft);
+      color: var(--navy);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .btn-navy {
+      border: 0;
+      background: var(--navy);
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    /* AI名片预览卡 */
+    .mini-ai-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      background: #f5f6f5;
+      color: #14272d;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+      min-height: 180px;
+    }
+    .mini-ai-card.paper { background: #f8f5ef; color: #373830; }
+    .mini-ai-card.forest { background: #f4f6f1; color: #203a30; }
+    .mac-left { width: 105px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2; }
+    .mac-right { flex: 1; text-align: right; border-right: 2px solid currentColor; padding-right: 8px; z-index: 2; }
+
+    /* 右侧桌面控制台 */
+    .sim-guide-panel {
+      flex: 1;
+      max-width: 440px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 26px 28px;
+      color: #e2ebf3;
+    }
+    .sim-guide-panel h2 {
+      margin: 8px 0 10px;
+      font-size: 22px;
+      color: #fff;
+    }
+    .sim-guide-panel p {
+      font-size: 13px;
+      color: #b4c6d6;
+      line-height: 1.75;
+      margin: 0 0 18px;
+    }
+    .guide-tab-btns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .guide-tab-btn {
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.05);
+      color: #fff;
+      padding: 12px 14px;
+      border-radius: 8px;
+      text-align: left;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+    .guide-tab-btn strong { display: block; font-size: 13.5px; color: var(--gold-soft); margin-bottom: 3px; }
+    .guide-tab-btn span { display: block; font-size: 11px; color: #a7bccd; }
+    .guide-tab-btn.active, .guide-tab-btn:hover {
+      background: rgba(228,195,152,0.18);
+      border-color: var(--gold-soft);
+    }
+
+    @media (max-width: 860px) {
+      .sim-stage { flex-direction: column; }
+      .sim-guide-panel { max-width: 392px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="sim-top-bar">
+    <div class="sim-top-left">
+      <span class="sim-badge">微信小程序实时模拟器</span>
+      <strong>上下闻 · AI 交付人才供应链与玩家社区（WeChat Mini Program）</strong>
+    </div>
+    <div class="sim-top-links">
+      <a href="./index.html">← 返回 PC 门户官网</a>
+    </div>
+  </div>
+
+  <div class="sim-stage">
+    <!-- 左侧 iPhone 微信小程序实时交互机身 -->
+    <div class="phone-shell">
+      <div class="phone-screen">
+        <!-- 微信状态栏 -->
+        <div class="wx-status-bar">
+          <span>14:42</span>
+          <span>5G 100%</span>
+        </div>
+        <!-- 微信胶囊导航栏 -->
+        <div class="wx-nav-bar">
+          <span class="wx-nav-title" id="wx-nav-title">上下闻 · AI 交付与社区门户</span>
+          <div class="wx-capsule"><span>•••</span><i>|</i><span>◎</span></div>
+        </div>
+
+        <!-- Toast 提示 -->
+        <div class="wx-toast" id="wx-toast" hidden></div>
+
+        <!-- 页面滚动主视图 -->
+        <div class="wx-page-scroll" id="wx-scroll">
+
+          <!-- ==================== TAB 0: 门户首页 (pages/index/index) ==================== -->
+          <div class="wx-tab-page" id="page-index">
+            <div class="utility-bar">
+              <span class="utility-label">角色通道：</span>
+              <button class="role-chip" onclick="switchTab('partners', 'company')">企业与渠道(B端)</button>
+              <button class="role-chip" onclick="switchTab('fde')">准 FDE 学员</button>
+              <button class="role-chip active">社区探索者</button>
+            </div>
+
+            <div class="brand-header">
+              <div class="brand-left">
+                <img class="brand-logo" src="./assets/shangxiawen-logo.png" alt="上下闻">
+                <div class="brand-title-wrap">
+                  <span class="brand-title">上下闻 SHANGXIAWEN</span>
+                  <span class="brand-sub">AI DELIVERY &amp; COMMUNITY</span>
+                </div>
+              </div>
+              <button class="portal-pill" onclick="switchTab('card')">MySXW 名片 ↗</button>
+            </div>
+
+            <!-- 3屏焦点横幅 -->
+            <div class="hero-box">
+              <img class="hero-mascot" id="sim-mascot" src="./assets/spirit-cutout.webp" alt="闻闻精灵" onclick="waveMascot()">
+              <div id="hero-slide-0">
+                <span class="hero-eyebrow">● 焦点 01 / 社区与交付人才供应链</span>
+                <h1 class="hero-h1">让灵感碰撞，<br>让 AI <em class="gold-em">真正落地交付。</em></h1>
+                <p class="hero-intro">上接企业与咨询渠道真实项目，下连认证 FDE 工程师与超级个体。</p>
+                <button class="btn-gold" style="width:auto;padding:7px 14px;font-size:12px" onclick="waveMascot()">轻触精灵打招呼 ✳</button>
+              </div>
+              <div id="hero-slide-1" hidden>
+                <span class="hero-eyebrow">● 焦点 02 / FDE COMPETENCY v1.0</span>
+                <h1 class="hero-h1">AI 时代最缺的，<br>是<em class="gold-em">能驻场交付的人。</em></h1>
+                <p class="hero-intro">围绕业务诊断、RAG 知识库、Agent 工作流等 6 大模块培养标准化人才。</p>
+                <button class="btn-gold" style="width:auto;padding:7px 14px;font-size:12px" onclick="switchTab('fde')">进入 FDE 能力学院 ↗</button>
+              </div>
+              <div id="hero-slide-2" hidden>
+                <span class="hero-eyebrow">● 焦点 03 / B2B 企业交付伙伴计划</span>
+                <h1 class="hero-h1">你有客户与场景，<br>我们出<em class="gold-em">FDE 与交付。</em></h1>
+                <p class="hero-intro">面向咨询/培训机构与 AI 产品商提供背靠背分包与人才输送。</p>
+                <button class="btn-gold" style="width:auto;padding:7px 14px;font-size:12px" onclick="switchTab('partners', 'company')">企业交付合作专页 ↗</button>
+              </div>
+              <div class="hero-dots">
+                <button class="hero-dot active" onclick="setHeroSlide(0, this)">01 社区</button>
+                <button class="hero-dot" onclick="setHeroSlide(1, this)">02 FDE学院</button>
+                <button class="hero-dot" onclick="setHeroSlide(2, this)">03 企业合作</button>
+              </div>
+            </div>
+
+            <!-- 悬浮四宫格 -->
+            <div class="quick-dock">
+              <div class="dock-cards">
+                <button class="dock-card" onclick="document.getElementById('hub-sec').scrollIntoView({behavior:'smooth'})">
+                  <span class="dc-num">01 / EVENTS</span>
+                  <span class="dc-title">活动与日历</span>
+                  <span class="dc-sub">往期复盘与预告</span>
+                </button>
+                <button class="dock-card" onclick="switchTab('fde')">
+                  <span class="dc-num">02 / ACADEMY</span>
+                  <span class="dc-title">FDE 学院</span>
+                  <span class="dc-sub">6模块 · 证书查验</span>
+                </button>
+                <button class="dock-card" onclick="switchTab('card')">
+                  <span class="dc-num">03 / STUDIO</span>
+                  <span class="dc-title">AI 名片工坊</span>
+                  <span class="dc-sub">4步生成保存相册</span>
+                </button>
+                <button class="dock-card" onclick="switchTab('partners')">
+                  <span class="dc-num">04 / PARTNERS</span>
+                  <span class="dc-title">交付合作</span>
+                  <span class="dc-sub">上下游项目对接</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 数据带 -->
+            <div class="stats-strip">
+              <div class="stat-cell"><span class="stat-num">6 大模块</span><span class="stat-label">FDE能力标准</span></div>
+              <div class="stat-cell"><span class="stat-num">3 档进阶</span><span class="stat-label">认证进派单池</span></div>
+              <div class="stat-cell"><span class="stat-num">2 条B端线</span><span class="stat-label">分包&amp;输送</span></div>
+              <div class="stat-cell"><span class="stat-num">100% 本地</span><span class="stat-label">隐私零追踪</span></div>
+            </div>
+
+            <!-- 活动与日程 (渐进式披露) -->
+            <div class="section-wrap" id="hub-sec">
+              <div class="hkmu-sec-head">
+                <span class="sec-kicker">01 / HIGHLIGHTS &amp; CALENDAR</span>
+                <span class="sec-title">社区活动日程与焦点回顾</span>
+              </div>
+
+              <div class="pill-bar">
+                <button class="pill-btn active" id="hub-btn-second" onclick="setHubTab('second')">
+                  <span>第二期·AIGC局</span>
+                  <span class="pill-sub">11.08 焦点回顾</span>
+                </button>
+                <button class="pill-btn" id="hub-btn-first" onclick="setHubTab('first')">
+                  <span>第一期·怎么玩</span>
+                  <span class="pill-sub">10.25 现场回顾</span>
+                </button>
+                <button class="pill-btn" id="hub-btn-cal" onclick="setHubTab('cal')">
+                  <span>📅 活动日程表</span>
+                  <span class="pill-sub">闭门会&amp;预告</span>
+                </button>
+              </div>
+
+              <!-- 第二期 -->
+              <div class="card-box" id="hub-panel-second">
+                <img class="event-cover" src="./assets/events/aigc-2026-11-08-4.webp" alt="AIGC共创局">
+                <div class="event-meta">2026 年 11 月 8 日 · 深圳华侨城晓宇宙咖啡馆</div>
+                <div class="event-h3">第二期：AIGC 共创局</div>
+                <div class="event-desc">从主题分享走向围桌交流。大家带着想法和电脑，现场讨论电商商品图生成、AI短剧分镜与跨行业应用。</div>
+
+                <button class="expand-trigger" onclick="toggleBox('exp-p2', this)">
+                  <span>渐进展开：查看第二期的 4 个核心环节</span><span>＋ 展开</span>
+                </button>
+                <div class="expand-body" id="exp-p2" hidden>
+                  <div class="prog-item"><span class="prog-title">01｜AIGC 实战分享</span><span class="prog-detail">TikTok AI 生图与视频专家拆解电商广告与 AI 短剧分镜。</span></div>
+                  <div class="prog-item"><span class="prog-title">02｜跨行业交流</span><span class="prog-detail">聊 AI Agent 与产品落地，连接电商、制造与教育场景。</span></div>
+                  <div class="prog-item"><span class="prog-title">03｜AI 创意挑战赛</span><span class="prog-detail">4–5 人组成小队，现场用 AI 完成海报或短剧作品。</span></div>
+                  <div class="prog-item"><span class="prog-title">04｜自由交流</span><span class="prog-detail">让懂技术的人遇见真实场景，让有想法的人找到伙伴。</span></div>
+                </div>
+
+                <button class="expand-trigger" onclick="toggleBox('exp-g2', this)">
+                  <span>渐进展开：浏览另外 3 张现场照片</span><span>＋ 展开</span>
+                </button>
+                <div class="gallery-grid" id="exp-g2" hidden>
+                  <img class="gallery-thumb" src="./assets/events/aigc-2026-11-08-1.webp" alt="现场1">
+                  <img class="gallery-thumb" src="./assets/events/aigc-2026-11-08-2.webp" alt="现场2">
+                  <img class="gallery-thumb" src="./assets/events/aigc-2026-11-08-3.webp" alt="现场3">
+                </div>
+              </div>
+
+              <!-- 第一期 -->
+              <div class="card-box" id="hub-panel-first" hidden>
+                <img class="event-cover" src="./assets/events/ai-meetup-2026-10-25-1.webp" alt="第一期">
+                <div class="event-meta">2026 年 10 月 25 日 · 深圳华侨城晓宇宙咖啡</div>
+                <div class="event-h3">第一期：AI 怎么玩儿起来</div>
+                <div class="event-desc">现场有来自制造业、金融业的参与者，也有 00 后 AI 硬件创业者。</div>
+                <button class="expand-trigger" onclick="toggleBox('exp-p1', this)">
+                  <span>渐进展开：查看第一期的 4 个核心环节</span><span>＋ 展开</span>
+                </button>
+                <div class="expand-body" id="exp-p1" hidden>
+                  <div class="prog-item"><span class="prog-title">01｜思维投票</span><span class="prog-detail">现场匿名投票选出最有价值的 AI 创意。</span></div>
+                  <div class="prog-item"><span class="prog-title">02｜开发分享</span><span class="prog-detail">嘉宾分享从构思、避坑到商业化项目的真实历程。</span></div>
+                  <div class="prog-item"><span class="prog-title">03｜免费学习</span><span class="prog-detail">完成 AI 工具使用的 0–1 入门。</span></div>
+                  <div class="prog-item"><span class="prog-title">04｜自由交流</span><span class="prog-detail">结识极客、设计师和创业者。</span></div>
+                </div>
+              </div>
+
+              <!-- 日程表 -->
+              <div class="card-box" id="hub-panel-cal" hidden>
+                <div class="date-row">
+                  <div class="date-badge upcoming"><span class="db-month">DEC</span><span class="db-day">待定</span></div>
+                  <div>
+                    <span class="date-tag gold">筹备中 · 铁律一锁需求</span>
+                    <span class="date-title">企业 AI 交付闭门会（20人定向邀约）</span>
+                    <span class="date-desc">面向咨询/培训机构与有 AI 落地需求的企业负责人，梳理意向分包项目。</span>
+                  </div>
+                </div>
+                <div class="date-row">
+                  <div class="date-badge upcoming"><span class="db-month">JAN</span><span class="db-day">待定</span></div>
+                  <div>
+                    <span class="date-tag gold">报名待开放</span>
+                    <span class="date-title">深圳城市沙龙 &amp; 首期 FDE 启航营开放日</span>
+                    <span class="date-desc">50–100 人跨行业线下交流，解读《FDE 能力模型 v1.0》。</span>
+                  </div>
+                </div>
+                <div class="date-row">
+                  <div class="date-badge"><span class="db-month">NOV</span><span class="db-day">08</span></div>
+                  <div>
+                    <span class="date-tag">已圆满结束</span>
+                    <span class="date-title">第二期 · 深圳 AI 沙龙：AIGC 共创局</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== TAB 1: FDE 学院 (pages/fde/fde) ==================== -->
+          <div class="wx-tab-page" id="page-fde" hidden>
+            <div style="background:var(--navy);color:#fff;padding:18px 15px 20px">
+              <span style="font-size:10px;color:var(--gold-soft);border:1px solid rgba(228,195,152,0.4);padding:3px 9px;border-radius:15px">● STANDARD v1.0 · 2026-11</span>
+              <h2 style="font-size:21px;margin:10px 0 6px">AI 时代最缺的，<br>是<span style="color:var(--gold-soft)">能把方案交付的人。</span></h2>
+              <p style="font-size:12px;color:#b8c9d6;margin:0;line-height:1.6">上下闻 FDE（前线部署工程师）能力模型与三级认证体系。</p>
+            </div>
+
+            <div class="section-wrap">
+              <div class="hkmu-sec-head">
+                <span class="sec-kicker">01 / FDE COMPETENCY MODEL (6 MODULES)</span>
+                <span class="sec-title">FDE 能力模型六大必修模块</span>
+                <span class="sec-desc">点选任一模块编号，下方渐进披露交付产出与考核方式。</span>
+              </div>
+
+              <div class="mod-grid" id="sim-mod-grid">
+                <button class="mod-chip active" onclick="selectSimMod(0)"><span class="mc-num">M01</span><span class="mc-name">业务诊断</span></button>
+                <button class="mod-chip" onclick="selectSimMod(1)"><span class="mc-num">M02</span><span class="mc-name">知识库RAG</span></button>
+                <button class="mod-chip" onclick="selectSimMod(2)"><span class="mc-num">M03</span><span class="mc-name">工作流编排</span></button>
+                <button class="mod-chip" onclick="selectSimMod(3)"><span class="mc-num">M04</span><span class="mc-name">系统集成</span></button>
+                <button class="mod-chip" onclick="selectSimMod(4)"><span class="mc-num">M05</span><span class="mc-name">价值销售</span></button>
+                <button class="mod-chip" onclick="selectSimMod(5)"><span class="mc-num">M06</span><span class="mc-name">交付验收</span></button>
+              </div>
+
+              <div class="card-box" style="border-top:3px solid var(--teal)">
+                <span class="sec-kicker" id="sm-code">MODULE 01 / 06 · 需求侧起点</span>
+                <div class="event-h3" id="sm-title">业务诊断与需求边界</div>
+                <div class="event-desc" id="sm-desc">走进企业业务现场，识别哪些环节适合用 AI 改造、哪些应当保留人工规则，拦截伪需求并制定清晰的验收指标。</div>
+                <div style="margin-top:12px;padding-top:10px;border-top:1px solid var(--border);font-size:12px">
+                  <div style="margin-bottom:6px"><strong>📦 标准交付产出：</strong><span id="sm-out" style="color:var(--muted)">业务场景诊断书、ROI 测算与验收清单</span></div>
+                  <div><strong>🎯 实战考核方式：</strong><span id="sm-exam" style="color:var(--muted)">真实企业案例需求拆解与防坑答辩</span></div>
+                </div>
+              </div>
+
+              <!-- 三档认证 -->
+              <div class="hkmu-sec-head" style="margin-top:18px">
+                <span class="sec-kicker">02 / TRAINING &amp; CERTIFICATION</span>
+                <span class="sec-title">三档培养与认证：卖的是接单资格</span>
+              </div>
+              <div class="pill-bar" id="sim-tier-tabs">
+                <button class="pill-btn active" onclick="selectSimTier(1)">★ 认证FDE<span class="pill-sub">¥1,999 推荐</span></button>
+                <button class="pill-btn" onclick="selectSimTier(2)">FDE+销售<span class="pill-sub">¥2,999 双栖</span></button>
+                <button class="pill-btn" onclick="selectSimTier(0)">启航营<span class="pill-sub">¥999 入门</span></button>
+              </div>
+              <div class="card-box" id="sim-tier-box" style="background:var(--navy);color:#fff">
+                <div style="display:flex;justify-content:space-between;align-items:center">
+                  <span style="font-size:10px;background:var(--gold-soft);color:var(--navy);padding:2px 8px;border-radius:4px;font-weight:700" id="st-badge">TIER 02 · 核心主力</span>
+                  <strong style="font-size:19px;color:var(--gold-soft)" id="st-price">¥1,999 / 期</strong>
+                </div>
+                <div style="font-size:17px;font-weight:700;margin:8px 0 6px" id="st-title">认证 FDE 工程师</div>
+                <p style="font-size:12px;opacity:0.88;margin:0 0 12px" id="st-desc">师徒制带队实战，考核通过授予 L1–L3 认证编号，正式进入官方 FDE 交付人才池（平台服务抽成参考 20%）。</p>
+                <button class="btn-gold" onclick="switchTab('partners')">咨询排期与考核要求 ↗</button>
+              </div>
+
+              <!-- 证书查验 -->
+              <div class="hkmu-sec-head" style="margin-top:18px">
+                <span class="sec-kicker">03 / VERIFICATION</span>
+                <span class="sec-title">FDE 证书编号在线核验</span>
+              </div>
+              <div class="card-box">
+                <div style="display:flex;gap:8px">
+                  <input id="sim-cert-input" value="SXW-FDE-2026001" style="flex:1;padding:8px 10px;border:1px solid #c2cdc8;border-radius:6px;font-size:12px" placeholder="输入编号">
+                  <button class="btn-navy" style="width:auto;padding:8px 16px" onclick="verifySimCert()">核验</button>
+                </div>
+                <div id="sim-cert-res" style="margin-top:10px;padding:10px;border-radius:6px;background:#e7f3ed;color:#1c543d;font-size:12px;line-height:1.6">
+                  <strong>✓ 核验通过 · SXW-FDE-2026001</strong><br>持证人：林*（示例）｜ 级别：L2 独立交付 FDE<br>考核：M01–M06 全通过 ｜ 状态：有效
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== TAB 2: AI 名片 (pages/card/card) ==================== -->
+          <div class="wx-tab-page" id="page-card" hidden>
+            <div style="background:var(--navy);padding:12px 14px 16px">
+              <div style="display:flex;justify-content:space-between;font-size:10.5px;color:#b7c8d6;margin-bottom:8px">
+                <span>上下闻社区版 · 横版 AI 名片实时预览</span>
+                <span style="color:var(--gold-soft)">Canvas 2D 本地合成</span>
+              </div>
+              <div class="mini-ai-card" id="sim-card-preview">
+                <div class="mac-left">
+                  <div>
+                    <img src="./assets/shangxiawen-logo.png" alt="上下闻" style="width:72px;height:28px;object-fit:contain;background:var(--navy);padding:2px 5px;border-radius:3px">
+                    <span style="display:block;font-size:8.5px;color:#687a80;margin-top:3px">在交流中生长，让灵感上下相闻</span>
+                  </div>
+                  <div style="display:flex;gap:6px;margin-top:10px">
+                    <div style="background:#fff;padding:3px;border-radius:4px;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.1)">
+                      <img src="./assets/community-qr.png" alt="二维码" style="width:42px;height:42px;display:block">
+                      <span style="font-size:7.5px;color:#555">上下闻社区</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="mac-right">
+                  <strong style="font-size:18px;display:block" id="sc-name">好奇的 AI 探索者</strong>
+                  <div style="width:70px;height:1.5px;background:currentColor;margin:4px 0 6px auto"></div>
+                  <span style="font-size:11px;font-weight:600;display:block" id="sc-role">FDE 工程师 · 互联网 / 科技</span>
+                  <span style="font-size:10px;color:#687a80;display:block;margin:4px 0" id="sc-bio">想把好玩的 AI，带进真实的工作与生活。</span>
+                  <span style="font-size:10px;font-weight:600;color:#185d73;display:block">#图像生成  #智能体/Agent  #工作流</span>
+                </div>
+              </div>
+              <div style="display:flex;gap:6px;margin-top:10px">
+                <button class="role-chip active" onclick="setSimCardTheme('', this)">海湾蓝</button>
+                <button class="role-chip" onclick="setSimCardTheme('paper', this)">暖纸棕</button>
+                <button class="role-chip" onclick="setSimCardTheme('forest', this)">森林绿</button>
+              </div>
+            </div>
+
+            <div class="section-wrap">
+              <div class="pill-bar" id="sim-wz-tabs">
+                <button class="pill-btn active" onclick="setSimStep(0)">1.基础身份</button>
+                <button class="pill-btn" onclick="setSimStep(1)">2.兴趣标签</button>
+                <button class="pill-btn" onclick="setSimStep(2)">3.供需连接</button>
+              </div>
+
+              <div class="card-box" id="sim-step-0">
+                <label style="display:block;font-size:12px;margin-bottom:10px">名片称呼 *
+                  <input style="width:100%;padding:8px;margin-top:4px;border:1px solid #c7d1cd;border-radius:6px" placeholder="输入你的称呼，上方实时同步" oninput="document.getElementById('sc-name').textContent=this.value||'好奇的 AI 探索者'">
+                </label>
+                <label style="display:block;font-size:12px;margin-bottom:10px">角色 / 身份
+                  <input style="width:100%;padding:8px;margin-top:4px;border:1px solid #c7d1cd;border-radius:6px" placeholder="例如：FDE 工程师、产品经理" oninput="document.getElementById('sc-role').textContent=this.value||'FDE 工程师'">
+                </label>
+                <label style="display:block;font-size:12px">一句话介绍
+                  <input style="width:100%;padding:8px;margin-top:4px;border:1px solid #c7d1cd;border-radius:6px" placeholder="你正在用 AI 探索什么？" oninput="document.getElementById('sc-bio').textContent=this.value||'想把好玩的 AI，带进真实的工作与生活。'">
+                </label>
+              </div>
+
+              <div class="card-box" id="sim-step-1" hidden>
+                <p style="font-size:12px;margin:0 0 8px">点击选择 AI 兴趣方向（最多 5 项）：</p>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <span style="padding:5px 10px;border-radius:15px;background:var(--navy);color:var(--gold-soft);font-size:11px"># 图像生成</span>
+                  <span style="padding:5px 10px;border-radius:15px;background:var(--navy);color:var(--gold-soft);font-size:11px"># 智能体 / Agent</span>
+                  <span style="padding:5px 10px;border-radius:15px;background:var(--navy);color:var(--gold-soft);font-size:11px"># 工作流自动化</span>
+                  <span style="padding:5px 10px;border-radius:15px;background:#eef2ef;color:#4f635b;font-size:11px"># AI 编程</span>
+                  <span style="padding:5px 10px;border-radius:15px;background:#eef2ef;color:#4f635b;font-size:11px"># 行业应用</span>
+                </div>
+              </div>
+
+              <div class="card-box" id="sim-step-2" hidden>
+                <label style="display:block;font-size:12px;margin-bottom:10px">我可以分享 / 正在做的事
+                  <input style="width:100%;padding:8px;margin-top:4px;border:1px solid #c7d1cd;border-radius:6px" placeholder="例如：企业 RAG 知识库落地经验">
+                </label>
+                <label style="display:block;font-size:12px">我希望连接
+                  <input style="width:100%;padding:8px;margin-top:4px;border:1px solid #c7d1cd;border-radius:6px" placeholder="例如：有 B 端客户资源的咨询伙伴">
+                </label>
+              </div>
+
+              <div style="display:flex;gap:8px">
+                <button class="btn-gold" onclick="showToast('✓ 已模拟调用 Canvas 2D 生成高清名片存相册')">💾 生成高清名片存相册</button>
+                <button class="btn-navy" onclick="showToast('✓ 名片文字介绍已复制到剪贴板')">⧉ 复制文字</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== TAB 3: 交付合作 (pages/partners/partners) ==================== -->
+          <div class="wx-tab-page" id="page-partners" hidden>
+            <div style="background:#092d39;color:#fff;padding:18px 15px 20px">
+              <span style="font-size:10px;color:var(--gold-soft)">● 上下闻 · AI 交付伙伴计划</span>
+              <h2 style="font-size:21px;margin:8px 0 6px">让 AI 的可能，<br>走进<span style="color:var(--gold-soft)">真实业务。</span></h2>
+              <p style="font-size:12px;color:#b8c9c9;margin:0">上接企业与咨询渠道项目 ↕ 下连认证 FDE 与实施团队</p>
+            </div>
+
+            <div class="section-wrap">
+              <div class="hkmu-sec-head">
+                <span class="sec-kicker">01 / CHOOSE YOUR SIDE</span>
+                <span class="sec-title">选择你的合作视角</span>
+              </div>
+
+              <div class="pill-bar">
+                <button class="pill-btn active" id="p-side-provider" onclick="setPartnerSide('provider')">
+                  <span>B / 我是FDE与伙伴</span><span class="pill-sub">下游供给侧：接项目</span>
+                </button>
+                <button class="pill-btn" id="p-side-company" onclick="setPartnerSide('company')">
+                  <span>A / 我是企业与渠道</span><span class="pill-sub">上游需求侧：找交付</span>
+                </button>
+              </div>
+
+              <div class="card-box" id="p-box-provider">
+                <span class="sec-kicker">B / 实施伙伴与 FDE 侧（下）</span>
+                <div class="event-h3">把你的经验，用在适合的项目里。</div>
+                <div class="event-desc">欢迎认证 FDE、AI 销售顾问、独立开发者与 OPC 团队。我们分别了解具体执行人、实际经验与档期。</div>
+              </div>
+
+              <div class="card-box" id="p-box-company" hidden>
+                <span class="sec-kicker">A / 产品、咨询与培训渠道方（上）</span>
+                <div class="event-h3">你的产品与客户，需要更多实施力量。</div>
+                <div class="event-desc">支持背靠背分包、人天派驻或联合体交付。先梳理任务范围与现场条件，核实经验与档期，双方认可后定向介绍。</div>
+              </div>
+
+              <!-- 沟通提纲与运营微信 -->
+              <div class="hkmu-sec-head" style="margin-top:16px">
+                <span class="sec-kicker">02 / 2-STEP CONNECT</span>
+                <span class="sec-title">一键复制提纲 &amp; 联系运营</span>
+              </div>
+
+              <div class="card-box" style="background:#092d39;color:#fff">
+                <span style="font-size:11px;color:var(--gold-soft);font-weight:700">STEP 1 · 沟通提纲预览</span>
+                <pre id="sim-outline-text" style="background:#103945;padding:10px;border-radius:6px;font-size:11px;color:#d0dfdf;white-space:pre-wrap;line-height:1.65;margin:8px 0 12px">你好，我想了解上下闻的交付伙伴计划（个人伙伴 / FDE）。
+我的称呼：
+擅长的产品 / 实施方向：
+可参与城市 / 远程：
+近期可用档期：</pre>
+                <button class="btn-gold" onclick="copySimOutline()">📋 一键复制沟通提纲</button>
+              </div>
+
+              <div class="card-box" style="text-align:center">
+                <span style="font-size:11px;color:var(--teal);font-weight:700">STEP 2 · 扫码或长按添加上下闻运营 · 闻闻</span>
+                <img src="./assets/operations-wechat.jpg" alt="运营微信二维码" style="width:170px;height:210px;object-fit:contain;margin:10px auto;border-radius:8px;border:1px solid var(--border)">
+                <span style="font-size:11px;color:var(--muted);display:block">先交流意向，再由运营私下核实对接</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 微信小程序底部 4 TabBar -->
+        <div class="wx-tab-bar">
+          <button class="wx-tab-item active" data-tab="index" onclick="switchTab('index')">
+            <span class="icon">🏛️</span><span>门户首页</span>
+          </button>
+          <button class="wx-tab-item" data-tab="fde" onclick="switchTab('fde')">
+            <span class="icon">🎓</span><span>FDE 学院</span>
+          </button>
+          <button class="wx-tab-item" data-tab="card" onclick="switchTab('card')">
+            <span class="icon">🪪</span><span>AI 名片</span>
+          </button>
+          <button class="wx-tab-item" data-tab="partners" onclick="switchTab('partners')">
+            <span class="icon">🤝</span><span>交付合作</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右侧操作指引与快捷跳页控制台 -->
+    <div class="sim-guide-panel">
+      <span class="sim-badge" style="background:#0b5d69">WECHAT MINI PROGRAM PREVIEW</span>
+      <h2>上下闻微信小程序 · 交互预览台</h2>
+      <p>左侧是 1:1 还原 `/miniprogram` 原生代码的交互模拟器。你可以直接在左侧手机屏幕内点击操作，或点击下方快捷按钮切换 4 大小程序页面：</p>
+
+      <div class="guide-tab-btns">
+        <button class="guide-tab-btn active" id="gbtn-index" onclick="switchTab('index')">
+          <strong>01 · 门户首页</strong>
+          <span>角色通道 · 3屏焦点轮播 · 活动日程表</span>
+        </button>
+        <button class="guide-tab-btn" id="gbtn-fde" onclick="switchTab('fde')">
+          <strong>02 · FDE 能力学院</strong>
+          <span>6大模块主从切换 · 3档认证 · 证书查验</span>
+        </button>
+        <button class="guide-tab-btn" id="gbtn-card" onclick="switchTab('card')">
+          <strong>03 · AI 名片工坊</strong>
+          <span>实时打字预览 · 3套配色 · 存相册</span>
+        </button>
+        <button class="guide-tab-btn" id="gbtn-partners" onclick="switchTab('partners')">
+          <strong>04 · 交付合作专页</strong>
+          <span>上下游视角分流 · 复制提纲 · 运营二维码</span>
+        </button>
+      </div>
+
+      <div style="background:rgba(0,0,0,0.25);padding:14px 16px;border-radius:10px;font-size:12px;line-height:1.75;color:#bfd0de">
+        <strong style="color:var(--gold-soft);display:block;margin-bottom:4px">💡 如何在微信开发者工具中运行真机版？</strong>
+        小程序原生源码已保存在：<br>
+        <code style="color:#fff;background:rgba(255,255,255,0.1);padding:2px 6px;border-radius:4px">/Users/serenagini/Desktop/上下闻官网/miniprogram</code><br>
+        打开「微信开发者工具」→ 选择「导入项目」→ 选择该目录即可直接编译并扫码在手机微信中体验。
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const navTitles = {
+      index: '上下闻 · AI 交付与社区门户',
+      fde: 'FDE 能力学院与证书核验',
+      card: 'AI 名片 4 步定制工坊',
+      partners: 'AI 交付伙伴计划与合作'
+    };
+
+    function showToast(msg) {
+      const t = document.getElementById('wx-toast');
+      t.textContent = msg;
+      t.hidden = false;
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => { t.hidden = true; }, 1800);
+    }
+
+    function switchTab(tab, partnerSide) {
+      ['index', 'fde', 'card', 'partners'].forEach(k => {
+        document.getElementById('page-' + k).hidden = (k !== tab);
+        document.getElementById('gbtn-' + k)?.classList.toggle('active', k === tab);
+      });
+      document.querySelectorAll('.wx-tab-item').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.tab === tab);
+      });
+      document.getElementById('wx-nav-title').textContent = navTitles[tab];
+      document.getElementById('wx-scroll').scrollTop = 0;
+      if (partnerSide) setPartnerSide(partnerSide);
+    }
+
+    function waveMascot() {
+      const m = document.getElementById('sim-mascot');
+      m.classList.add('waving');
+      showToast('闻闻向你挥手问好 ✳');
+      setTimeout(() => m.classList.remove('waving'), 900);
+    }
+
+    function setHeroSlide(idx, btn) {
+      [0, 1, 2].forEach(i => {
+        document.getElementById('hero-slide-' + i).hidden = (i !== idx);
+      });
+      document.querySelectorAll('.hero-dot').forEach(d => d.classList.toggle('active', d === btn));
+    }
+
+    function setHubTab(tab) {
+      ['second', 'first', 'cal'].forEach(k => {
+        document.getElementById('hub-panel-' + k).hidden = (k !== tab);
+        document.getElementById('hub-btn-' + k).classList.toggle('active', k === tab);
+      });
+    }
+
+    function toggleBox(id, btn) {
+      const el = document.getElementById(id);
+      el.hidden = !el.hidden;
+      btn.querySelector('span:last-child').textContent = el.hidden ? '＋ 展开' : '－ 收起';
+    }
+
+    const simMods = [
+      { code: 'MODULE 01 / 06 · 需求侧起点', title: '业务诊断与需求边界', desc: '走进企业业务现场，识别哪些环节适合用 AI 改造、哪些应当保留人工规则，拦截伪需求并制定清晰的验收指标。', out: '业务场景诊断书、ROI 测算与验收清单', exam: '真实企业案例需求拆解与防坑答辩' },
+      { code: 'MODULE 02 / 06 · 数据与知识层', title: '知识库治理与 RAG 检索', desc: '清洗企业非结构化文档（PDF、表格、手册），设计切片策略、元数据标签与检索增强管线，解决幻觉与答非所问。', out: '高准确率企业知识库、QA 测试集（≥50 题）', exam: '召回率与回答准确率盲测达标' },
+      { code: 'MODULE 03 / 06 · 流程编排层', title: '业务工作流与 Agent 编排', desc: '使用主流编排工具（Dify / Coze / n8n 等）把多步业务动作串成稳定流程，设计人工复核与异常兜底节点。', out: '可稳定运行的自动化工作流与异常处理手册', exam: '给定边界条件下的压力测试与容错验收' },
+      { code: 'MODULE 04 / 06 · 系统工程层', title: '应用集成与环境部署', desc: '将 AI 能力接入企微、飞书、钉钉或现有业务系统 API，处理私有化/云端环境配置、权限隔离与数据安全合规。', out: '端到端集成系统、接口文档与安全检查表', exam: '跨平台联调演示与权限安全审查' },
+      { code: 'MODULE 05 / 06 · 商业转化层', title: 'AI 方案沟通与价值销售', desc: '面向企业决策者与业务负责人，用听得懂的业务语言讲清 AI 方案价值、边界与报价逻辑，现场演示 POC。', out: 'POC 现场演示方案、立项建议书与报价单', exam: '模拟客户老板与业务主管现场高压问答' },
+      { code: 'MODULE 06 / 06 · 闭环沉淀层', title: '交付验收、赋能与复盘', desc: '编写一线员工看得懂的操作 SOP，完成客户团队培训交接，并将项目脱敏沉淀为可复用的行业模板。', out: '客户交接 SOP、培训课件与脱敏交付复盘报告', exam: '交付物完整性评审与客户满意度模拟验收' }
+    ];
+    function selectSimMod(idx) {
+      const m = simMods[idx];
+      document.getElementById('sm-code').textContent = m.code;
+      document.getElementById('sm-title').textContent = m.title;
+      document.getElementById('sm-desc').textContent = m.desc;
+      document.getElementById('sm-out').textContent = m.out;
+      document.getElementById('sm-exam').textContent = m.exam;
+      document.querySelectorAll('#sim-mod-grid .mod-chip').forEach((c, i) => c.classList.toggle('active', i === idx));
+    }
+
+    const simTiers = [
+      { badge: 'TIER 01 · 入门实战', price: '¥999 / 期', title: 'AI 交付启航营', desc: '掌握 FDE 六大模块基础方法、跑通真实企业脱敏场景沙盘演练，结业颁发完课证明（暂不进派单池）。' },
+      { badge: 'TIER 02 · 核心主力', price: '¥1,999 / 期', title: '认证 FDE 工程师', desc: '师徒制带队实战，考核通过授予 L1–L3 认证编号，正式进入官方 FDE 交付人才池（平台服务抽成参考 20%）。' },
+      { badge: 'TIER 03 · 复合伙伴', price: '¥2,999 / 期', title: 'FDE + AI 销售双栖班', desc: '涵盖 FDE 交付能力 + AI 销售谈单陪跑方法论，具备带队交付与渠道分销资格（平台服务抽成参考 15%）。' }
+    ];
+    function selectSimTier(idx) {
+      const t = simTiers[idx];
+      document.getElementById('st-badge').textContent = t.badge;
+      document.getElementById('st-price').textContent = t.price;
+      document.getElementById('st-title').textContent = t.title;
+      document.getElementById('st-desc').textContent = t.desc;
+      const btns = document.querySelectorAll('#sim-tier-tabs .pill-btn');
+      btns[0].classList.toggle('active', idx === 1);
+      btns[1].classList.toggle('active', idx === 2);
+      btns[2].classList.toggle('active', idx === 0);
+    }
+
+    function verifySimCert() {
+      const code = document.getElementById('sim-cert-input').value.trim().toUpperCase();
+      const box = document.getElementById('sim-cert-res');
+      if (code === 'SXW-FDE-2026001' || code === 'SXW-FDE-2026002') {
+        box.style.background = '#e7f3ed';
+        box.style.color = '#1c543d';
+        box.innerHTML = `<strong>✓ 核验通过 · ${code}</strong><br>持证人：${code.endsWith('1') ? '林*' : '陈*'}（示例）｜ 级别：${code.endsWith('1') ? 'L2 独立交付 FDE' : 'L3 架构与带队 FDE'}<br>考核：M01–M06 全通过 ｜ 状态：有效`;
+      } else {
+        box.style.background = '#f9f1e6';
+        box.style.color = '#7a5221';
+        box.innerHTML = `未查询到编号 <strong>${code || '空'}</strong> 的记录（可输入 SXW-FDE-2026001 体验）。`;
+      }
+    }
+
+    function setSimCardTheme(theme, btn) {
+      document.getElementById('sim-card-preview').className = 'mini-ai-card ' + theme;
+      btn.parentElement.querySelectorAll('.role-chip').forEach(c => c.classList.toggle('active', c === btn));
+    }
+
+    function setSimStep(idx) {
+      [0, 1, 2].forEach(i => {
+        document.getElementById('sim-step-' + i).hidden = (i !== idx);
+      });
+      document.querySelectorAll('#sim-wz-tabs .pill-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+    }
+
+    function setPartnerSide(side) {
+      document.getElementById('p-side-provider').classList.toggle('active', side === 'provider');
+      document.getElementById('p-side-company').classList.toggle('active', side === 'company');
+      document.getElementById('p-box-provider').hidden = (side !== 'provider');
+      document.getElementById('p-box-company').hidden = (side !== 'company');
+      document.getElementById('sim-outline-text').textContent = side === 'company'
+        ? '你好，我们为客户交付 AI 产品或解决方案，想沟通实施合作（产品 / 渠道商）。\n团队 / 产品称呼：\n当前客户项目要解决的问题：\n实施范围 / 期望时间：'
+        : '你好，我想了解上下闻的交付伙伴计划（个人伙伴 / FDE）。\n我的称呼：\n擅长的产品 / 实施方向：\n可参与城市 / 远程：\n近期可用档期：';
+    }
+
+    function copySimOutline() {
+      navigator.clipboard?.writeText(document.getElementById('sim-outline-text').textContent);
+      showToast('✓ 沟通提纲已复制，可去微信粘贴');
+    }
+  </script>
+</body>
+</html>
